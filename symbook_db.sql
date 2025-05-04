@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 04 mai 2025 à 17:38
+-- Généré le : dim. 04 mai 2025 à 18:10
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -24,6 +24,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `book`
+--
+
+CREATE TABLE `book` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `auhtor` varchar(255) NOT NULL,
+  `description` longtext NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `image_url` varchar(255) NOT NULL,
+  `stock` int(11) NOT NULL,
+  `foundation` date NOT NULL,
+  `category_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `category`
+--
+
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` longtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `doctrine_migration_versions`
 --
 
@@ -39,7 +69,10 @@ CREATE TABLE `doctrine_migration_versions` (
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20250504135454', '2025-05-04 15:55:06', 100),
-('DoctrineMigrations\\Version20250504145202', '2025-05-04 16:52:10', 21);
+('DoctrineMigrations\\Version20250504145202', '2025-05-04 16:52:10', 21),
+('DoctrineMigrations\\Version20250504160152', '2025-05-04 18:02:03', 52),
+('DoctrineMigrations\\Version20250504160354', '2025-05-04 18:04:12', 11),
+('DoctrineMigrations\\Version20250504160608', '2025-05-04 18:06:16', 81);
 
 -- --------------------------------------------------------
 
@@ -84,6 +117,19 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `username`) VALUES
 --
 
 --
+-- Index pour la table `book`
+--
+ALTER TABLE `book`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_CBE5A33112469DE2` (`category_id`);
+
+--
+-- Index pour la table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `doctrine_migration_versions`
 --
 ALTER TABLE `doctrine_migration_versions`
@@ -110,6 +156,18 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT pour la table `book`
+--
+ALTER TABLE `book`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `category`
+--
+ALTER TABLE `category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `messenger_messages`
 --
 ALTER TABLE `messenger_messages`
@@ -120,6 +178,16 @@ ALTER TABLE `messenger_messages`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `book`
+--
+ALTER TABLE `book`
+  ADD CONSTRAINT `FK_CBE5A33112469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
