@@ -1,47 +1,304 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Book index{% endblock %}
-
-{% block body %}
-    <h1>Book index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Auhtor</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Image_url</th>
-                <th>Stock</th>
-                <th>Foundation</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for book in books %}
-            <tr>
-                <td>{{ book.id }}</td>
-                <td>{{ book.title }}</td>
-                <td>{{ book.auhtor }}</td>
-                <td>{{ book.description }}</td>
-                <td>{{ book.price }}</td>
-                <td>{{ book.ImageUrl }}</td>
-                <td>{{ book.stock }}</td>
-                <td>{{ book.foundation ? book.foundation|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_book_show', {'id': book.id}) }}">show</a>
-                    <a href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_book_new') }}">Create new</a>
+{% block title %}Admin Panel - Books
 {% endblock %}
+
+{% block stylesheets %}
+
+
+	<style>:root
+	{
+		--dark-bg: #1a2332;
+		--light-bg: #ffffff;
+		--card-bg: #f8f9fa;
+		--text-light: #ffffff;
+		--text-dark: #000000;
+		--completed: #e6f7ee;
+		--completed-text: #10b981;
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: 'Inter', sans-serif;
+		display: flex;
+		min-height: 100vh;
+	}
+
+	.sidebar {
+		width: 240px;
+		background-color: var(--dark-bg);
+		color: var(--text-light);
+		padding: 20px 0;
+		flex-shrink: 0;
+		height: 100vh;
+		position: fixed;
+		z-index: 100;
+	}
+
+	.sidebar-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		padding: 0 20px 20px;
+		margin: 0;
+	}
+
+	.sidebar-nav {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.sidebar-nav li {
+		margin-bottom: 5px;
+	}
+
+	.sidebar-nav a {
+		display: flex;
+		align-items: center;
+		padding: 12px 20px;
+		color: var(--text-light);
+		text-decoration: none;
+		transition: background-color 0.2s;
+	}
+
+	.sidebar-nav a:hover,
+	.sidebar-nav a.active {
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.sidebar-nav a i {
+		margin-right: 12px;
+		font-size: 1.25rem;
+		width: 20px;
+		text-align: center;
+	}
+
+	.main-content {
+		flex-grow: 1;
+		margin-left: 240px;
+		padding: 30px;
+	}
+
+	.header-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 30px;
+	}
+
+	.dashboard-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin-bottom: 0;
+	}
+
+	.btn-add {
+		background-color: #3b82f6;
+		color: white;
+		border: none;
+		padding: 8px 16px;
+		border-radius: 6px;
+		font-weight: 500;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		transition: background-color 0.2s;
+	}
+
+	.btn-add:hover {
+		background-color: #2563eb;
+		color: white;
+	}
+
+	.books-section {
+		background-color: var(--light-bg);
+		border-radius: 8px;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		overflow: hidden;
+	}
+
+	.books-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		padding: 20px;
+		background-color: #f9fafb;
+		border-bottom: 1px solid #e5e7eb;
+		margin: 0;
+	}
+
+	.books-table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	.books-table th {
+		text-align: left;
+		padding: 12px 16px;
+		font-weight: 600;
+		color: #4b5563;
+		background-color: #f9fafb;
+		border-bottom: 2px solid #e5e7eb;
+	}
+
+	.books-table td {
+		padding: 12px 16px;
+		border-bottom: 1px solid #e5e7eb;
+		vertical-align: middle;
+	}
+
+	.books-table tr:hover {
+		background-color: #f9fafb;
+	}
+
+	.books-table tr:last-child td {
+		border-bottom: none;
+	}
+
+	.action-icons {
+		display: flex;
+		gap: 10px;
+	}
+
+	.action-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 6px;
+		color: #4b5563;
+		transition: all 0.2s;
+	}
+
+	.action-icon:hover {
+		background-color: #f3f4f6;
+	}
+
+	.action-icon.view {
+		color: #3b82f6;
+	}
+
+	.action-icon.edit {
+		color: #10b981;
+	}
+
+	.action-icon.delete {
+		color: #ef4444;
+	}
+
+	.truncate {
+		max-width: 200px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+</style>{% endblock %}{% block javascripts %}
+{{ parent() }}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>{% endblock %}{% block body %}
+<div class="sidebar">
+	<h1 class="sidebar-title">Admin Panel</h1>
+	<ul class="sidebar-nav">
+		<li>
+			<a href="{{ path('app_dashboard') }}">
+				<i class="bi bi-grid-1x2"></i>
+				Dashboard
+			</a>
+		</li>
+		<li>
+			<a href="{{ path('app_book_index') }}" class="active">
+				<i class="bi bi-book"></i>
+				Books
+			</a>
+		</li>
+		<li>
+			<a href="{{ path('app_category_index') }}">
+				<i class="bi bi-book"></i>
+				Categories
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bi bi-cart"></i>
+				Orders
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bi bi-people"></i>
+				Customers
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bi bi-gear"></i>
+				Settings
+			</a>
+		</li>
+	</ul>
+</div>
+
+<div class="main-content">
+	<div class="header-container">
+		<h1 class="dashboard-title">Books Management</h1>
+		<a href="{{ path('app_book_new') }}" class="btn-add">
+			<i class="bi bi-plus"></i>
+			Add Book
+		</a>
+	</div>
+
+	<div class="books-section">
+		<h2 class="books-title">All Books</h2>
+		<div class="table-responsive">
+			<table class="books-table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Title</th>
+						<th>Author</th>
+						<th>Description</th>
+						<th>Price</th>
+						<th>Stock</th>
+						<th>Foundation</th>
+						<th>Image</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for book in books %}
+						<tr>
+							<td>{{ book.id }}</td>
+							<td>{{ book.title }}</td>
+							<td>{{ book.author }}</td>
+							<td class="truncate">{{ book.description }}</td>
+							<td>${{ book.price }}</td>
+							<td>{{ book.stock }}</td>
+							<td>{{ book.foundation ? book.foundation|date('Y-m-d') : '' }}</td>
+							<td><img src="{{book.imageUrl}}" alt="" style="width : 100px;"></td>
+							<td>
+								<div class="action-icons">
+									<a href="{{ path('app_book_show', {'id': book.id}) }}" class="action-icon view" title="View">
+										<i class="bi bi-eye"></i>
+									</a>
+									<a href="{{ path('app_book_edit', {'id': book.id}) }}" class="action-icon edit" title="Edit">
+										<i class="bi bi-pencil"></i>
+									</a>
+									<form method="post" action="{{ path('app_book_delete', {'id': book.id}) }}" onsubmit="return confirm('Are you sure you want to delete this book?');" class="delete-form">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ book.id) }}">
+										<button type="submit" class="action-icon delete" title="Delete">
+											<i class="bi bi-trash"></i>
+										</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="8" class="text-center py-4">No books found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>{% endblock %}

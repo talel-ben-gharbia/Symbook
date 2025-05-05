@@ -19,9 +19,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'boolean')]
-    private bool $isVerified = false;
-
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
@@ -39,10 +36,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $username = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $verificationToken = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -130,25 +123,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isVerified(): bool
-    {
-        return $this->isVerified;
-    }
-
-    public function setIsVerified(bool $isVerified): static
-    {
-        $this->isVerified = $isVerified;
-        return $this;
-    }
-
-    public function getVerificationToken(): ?string
-    {
-        return $this->verificationToken;
-    }
-
-    public function setVerificationToken(?string $verificationToken): static
-    {
-        $this->verificationToken = $verificationToken;
-        return $this;
-    }
 }

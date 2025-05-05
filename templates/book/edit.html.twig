@@ -1,13 +1,285 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Book{% endblock %}
-
-{% block body %}
-    <h1>Edit Book</h1>
-
-    {{ include('book/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_book_index') }}">back to list</a>
-
-    {{ include('book/_delete_form.html.twig') }}
+{% block title %}Edit Book
 {% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<!-- Bootstrap CSS -->
+	<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Bootstrap Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+	<style>:root
+	{
+		--dark-bg: #1a2332;
+		--light-bg: #ffffff;
+		--card-bg: #f8f9fa;
+		--text-light: #ffffff;
+		--text-dark: #000000;
+		--completed: #e6f7ee;
+		--completed-text: #10b981;
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: 'Inter', sans-serif;
+		display: flex;
+		min-height: 100vh;
+	}
+
+	.sidebar {
+		width: 240px;
+		background-color: var(--dark-bg);
+		color: var(--text-light);
+		padding: 20px 0;
+		flex-shrink: 0;
+		height: 100vh;
+		position: fixed;
+		z-index: 100;
+	}
+
+	.sidebar-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		padding: 0 20px 20px;
+		margin: 0;
+	}
+
+	.sidebar-nav {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.sidebar-nav li {
+		margin-bottom: 5px;
+	}
+
+	.sidebar-nav a {
+		display: flex;
+		align-items: center;
+		padding: 12px 20px;
+		color: var(--text-light);
+		text-decoration: none;
+		transition: background-color 0.2s;
+	}
+
+	.sidebar-nav a:hover,
+	.sidebar-nav a.active {
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.sidebar-nav a i {
+		margin-right: 12px;
+		font-size: 1.25rem;
+		width: 20px;
+		text-align: center;
+	}
+
+	.main-content {
+		flex-grow: 1;
+		margin-left: 240px;
+		padding: 30px;
+	}
+
+	.header-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 30px;
+	}
+
+	.dashboard-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin-bottom: 0;
+	}
+
+	.form-section {
+		background-color: var(--light-bg);
+		border-radius: 8px;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		padding: 24px;
+		margin-bottom: 20px;
+	}
+
+	.form-group {
+		margin-bottom: 20px;
+	}
+
+	.form-label {
+		display: block;
+		margin-bottom: 8px;
+		font-weight: 500;
+		color: #4b5563;
+	}
+
+	.form-control {
+		width: 100%;
+		padding: 10px 12px;
+		border: 1px solid #d1d5db;
+		border-radius: 6px;
+		font-size: 0.95rem;
+		transition: border-color 0.2s;
+	}
+
+	.form-control:focus {
+		border-color: #3b82f6;
+		outline: none;
+		box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+	}
+
+	textarea.form-control {
+		min-height: 120px;
+		resize: vertical;
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		padding: 8px 16px;
+		border-radius: 6px;
+		font-weight: 500;
+		text-decoration: none;
+		transition: all 0.2s;
+		cursor: pointer;
+		border: none;
+	}
+
+	.btn-primary {
+		background-color: #3b82f6;
+		color: white;
+	}
+
+	.btn-primary:hover {
+		background-color: #2563eb;
+		color: white;
+	}
+
+	.btn-secondary {
+		background-color: #f3f4f6;
+		color: #4b5563;
+	}
+
+	.btn-secondary:hover {
+		background-color: #e5e7eb;
+		color: #1f2937;
+	}
+
+	.btn-danger {
+		background-color: #ef4444;
+		color: white;
+	}
+
+	.btn-danger:hover {
+		background-color: #dc2626;
+	}
+
+	.btn i {
+		margin-right: 6px;
+	}
+
+	.actions-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 24px;
+	}
+
+	.left-actions {
+		display: flex;
+		gap: 12px;
+	}
+
+	.delete-form {
+		display: inline-block;
+	}
+
+	/* Custom styles for the form */
+	.book-form .row {
+		display: flex;
+		flex-wrap: wrap;
+		margin-right: -10px;
+		margin-left: -10px;
+	}
+
+	.book-form .col-md-6,
+	.book-form .col-md-4 {
+		padding-right: 10px;
+		padding-left: 10px;
+		margin-bottom: 15px;
+	}
+
+	.book-form .col-md-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+
+	.book-form .col-md-4 {
+		flex: 0 0 33.333333%;
+		max-width: 33.333333%;
+	}
+</style>{% endblock %}{% block javascripts %}
+{{ parent() }}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>{% endblock %}{% block body %}
+<div class="sidebar">
+	<h1 class="sidebar-title">Admin Panel</h1>
+	<ul class="sidebar-nav">
+		<li>
+			<a href="{{ path('app_dashboard') }}">
+				<i class="bi bi-grid-1x2"></i>
+				Dashboard
+			</a>
+		</li>
+		<li>
+			<a href="{{ path('app_book_index') }}" class="active">
+				<i class="bi bi-book"></i>
+				Books
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bi bi-cart"></i>
+				Orders
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bi bi-people"></i>
+				Customers
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bi bi-gear"></i>
+				Settings
+			</a>
+		</li>
+	</ul>
+</div>
+
+<div class="main-content">
+	<div class="header-container">
+		<h1 class="dashboard-title">Edit Book</h1>
+		<a href="{{ path('app_book_index') }}" class="btn btn-secondary">
+			<i class="bi bi-arrow-left"></i>
+			Back to List
+		</a>
+	</div>
+
+	<div class="form-section">
+		{% if form_errors(form) %}
+			<div class="alert alert-danger">
+				{{ form_errors(form) }}
+			</div>
+		{% endif %}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">{{ message }}</div>
+		{% endfor %}
+		<div class="book-form-container">
+			{{ include('book/_form.html.twig', {'button_label': 'Update'}) }}
+		</div>
+	</div>
+</div>{% endblock %}

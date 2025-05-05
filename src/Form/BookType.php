@@ -15,17 +15,17 @@ class BookType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('auhtor')
+            ->add('author')
             ->add('description')
             ->add('price')
-            ->add('Image_url')
+            ->add('imageUrl')
             ->add('stock')
             ->add('foundation', null, [
                 'widget' => 'single_text',
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
         ;
     }

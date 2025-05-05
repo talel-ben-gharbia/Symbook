@@ -27,7 +27,7 @@ class Book
     private ?string $price = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Image_url = null;
+    private ?string $imageUrl = null;
 
     #[ORM\Column]
     private ?int $stock = null;
@@ -35,7 +35,8 @@ class Book
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $foundation = null;
 
-    #[ORM\ManyToOne(inversedBy: 'book')]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'books')]
+    #[ORM\JoinColumn(name: "category_id", referencedColumnName: "id", nullable: true)]
     private ?Category $category = null;
 
     public function getId(): ?int
@@ -51,7 +52,6 @@ class Book
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -63,7 +63,6 @@ class Book
     public function setAuthor(string $author): static
     {
         $this->author = $author;
-
         return $this;
     }
 
@@ -75,7 +74,6 @@ class Book
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -87,19 +85,17 @@ class Book
     public function setPrice(string $price): static
     {
         $this->price = $price;
-
         return $this;
     }
 
     public function getImageUrl(): ?string
     {
-        return $this->Image_url;
+        return $this->imageUrl;
     }
 
-    public function setImageUrl(string $Image_url): static
+    public function setImageUrl(string $imageUrl): static
     {
-        $this->Image_url = $Image_url;
-
+        $this->imageUrl = $imageUrl;
         return $this;
     }
 
@@ -111,7 +107,6 @@ class Book
     public function setStock(int $stock): static
     {
         $this->stock = $stock;
-
         return $this;
     }
 
@@ -123,7 +118,6 @@ class Book
     public function setFoundation(\DateTimeInterface $foundation): static
     {
         $this->foundation = $foundation;
-
         return $this;
     }
 
@@ -135,7 +129,6 @@ class Book
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
-
         return $this;
     }
 }
