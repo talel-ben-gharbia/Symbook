@@ -18,7 +18,7 @@ class Book
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $auhtor = null;
+    private ?string $author = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -55,14 +55,14 @@ class Book
         return $this;
     }
 
-    public function getAuhtor(): ?string
+    public function getAuthor(): ?string
     {
-        return $this->auhtor;
+        return $this->author;
     }
 
-    public function setAuhtor(string $auhtor): static
+    public function setAuthor(string $author): static
     {
-        $this->auhtor = $auhtor;
+        $this->author = $author;
 
         return $this;
     }
