@@ -1,0 +1,836 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Browse Books - BookStore{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .search-container {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 1px solid #dee2e6;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(34, 139, 230, 0.2);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+        }
+
+        .search-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .search-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-option input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary-color);
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            color: #495057;
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            outline: none;
+            min-width: 150px;
+        }
+
+        .view-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-option:hover, .view-option.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .books-container {
+            min-height: 400px;
+            position: relative;
+        }
+
+        .books-grid {
+            transition: opacity 0.3s ease;
+        }
+
+        .books-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .book-list-item {
+            display: grid;
+            grid-template-columns: 120px 1fr auto;
+            gap: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+        }
+
+        .book-list-image {
+            width: 120px;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .book-list-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-list-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-list-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-list-author {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .book-list-description {
+            font-size: 0.9rem;
+            color: #495057;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-list-actions {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .page-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            height: 36px;
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            color: #495057;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            padding: 0 0.5rem;
+        }
+
+        .page-item:hover {
+            background-color: #e9ecef;
+        }
+
+        .page-item.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(34, 139, 230, 0.2);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem 0;
+            color: #6c757d;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #dee2e6;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-results p {
+            font-size: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .book-list-item {
+                grid-template-columns: 1fr;
+            }
+
+            .book-list-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .book-list-actions {
+                flex-direction: row;
+                margin-top: 1rem;
+            }
+
+            .filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+        <h1 class="section-title">Browse Our Collection</h1>
+
+        <!-- Search Container -->
+        <div class="search-container">
+            <div class="search-input-container">
+                <i class="fas fa-search search-icon"></i>
+                <label for="book-search"></label><input type="text" id="book-search" class="search-input" placeholder="Search for books by title, author, or category...">
+            </div>
+
+            <div class="search-options">
+                <label class="search-option">
+                    <input type="radio" name="search-type" value="all" checked>
+                    <span>All</span>
+                </label>
+                <label class="search-option">
+                    <input type="radio" name="search-type" value="title">
+                    <span>Title</span>
+                </label>
+                <label class="search-option">
+                    <input type="radio" name="search-type" value="author">
+                    <span>Author</span>
+                </label>
+                <label class="search-option">
+                    <input type="radio" name="search-type" value="category">
+                    <span>Category</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Filter Container -->
+        <div class="filter-container">
+            <div class="filter-group">
+                <span class="filter-label">Sort by:</span>
+                <label for="sort-select"></label><select id="sort-select" class="filter-select">
+                    <option value="newest">Newest</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="title-asc">Title: A to Z</option>
+                    <option value="title-desc">Title: Z to A</option>
+                </select>
+
+                <span class="filter-label">Category:</span>
+                <label for="category-select"></label><select id="category-select" class="filter-select">
+                    <option value="all">All Categories</option>
+                    {% for category in get_categories() %}
+                        <option value="{{ category.name }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="view-options">
+                <button class="view-option active" data-view="grid">
+                    <i class="fas fa-th"></i>
+                </button>
+                <button class="view-option" data-view="list">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Books Container -->
+        <div class="books-container">
+            <!-- Loading Overlay -->
+            <div class="loading-overlay" id="loading-overlay">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Books Grid View (Default) -->
+            <div class="books-grid" id="books-grid">
+                {% for book in books %}
+                    <div class="book-card"
+                         data-id="{{ book.id }}"
+                         data-title="{{ book.title }}"
+                         data-author="{{ book.author }}"
+                         data-category="{{ book.category ? book.category.name : 'Uncategorized' }}"
+                         data-price="{{ book.price }}">
+                        <div class="book-image">
+                            <img src="{{ book.imageUrl }}" alt="{{ book.title }}">
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">{{ book.title }}</div>
+                            <div class="book-author">{{ book.author }}</div>
+                            <div class="book-price">${{ book.price }}</div>
+                            <div class="book-description">{{ book.description|slice(0, 100) }}{% if book.description|length > 100 %}...{% endif %}</div>
+                            <div class="book-actions">
+                                <a href="{{ path('app_book_show', {'id': book.id}) }}" class="btn btn-sm">View Details</a>
+                                <button class="btn btn-sm add-to-cart-btn" data-book-id="{{ book.id }}">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Books List View (Hidden by default) -->
+            <div class="books-list" id="books-list" style="display: none;">
+                {% for book in books %}
+                    <div class="book-list-item"
+                         data-id="{{ book.id }}"
+                         data-title="{{ book.title }}"
+                         data-author="{{ book.author }}"
+                         data-category="{{ book.category ? book.category.name : 'Uncategorized' }}"
+                         data-price="{{ book.price }}">
+                        <div class="book-list-image">
+                            <img src="{{ book.imageUrl }}" alt="{{ book.title }}">
+                        </div>
+                        <div class="book-list-info">
+                            <div class="book-list-title">{{ book.title }}</div>
+                            <div class="book-list-author">by {{ book.author }}</div>
+                            <div class="book-price" style="font-size: 1.2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.75rem;">${{ book.price }}</div>
+                            <div class="book-list-description">{{ book.description }}</div>
+                            <div class="book-category" style="font-size: 0.8rem; background-color: #e9ecef; display: inline-block; padding: 0.25rem 0.75rem; border-radius: 50px; margin-top: auto;">
+                                <i class="fas fa-tag" style="margin-right: 0.25rem;"></i>
+                                {{ book.category ? book.category.name : 'Uncategorized' }}
+                            </div>
+                        </div>
+                        <div class="book-list-actions">
+                            <a href="{{ path('app_book_show', {'id': book.id}) }}" class="btn">View Details</a>
+                            <button class="btn add-to-cart-btn" data-book-id="{{ book.id }}">Add to Cart</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- No Results Message (Hidden by default) -->
+            <div class="no-results" id="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>No books found</h3>
+                <p>Try adjusting your search or filter criteria to find what you're looking for.</p>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container">
+            <div class="pagination" id="pagination">
+                <a href="#" class="page-item disabled" id="prev-page">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                <a href="#" class="page-item active">1</a>
+                <a href="#" class="page-item">2</a>
+                <a href="#" class="page-item">3</a>
+                <a href="#" class="page-item" id="next-page">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="page-info" id="page-info">
+            Showing page <span id="current-page">1</span> of <span id="total-pages">5</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const searchInput = document.getElementById('book-search');
+            const searchTypeRadios = document.querySelectorAll('input[name="search-type"]');
+            const sortSelect = document.getElementById('sort-select');
+            const categorySelect = document.getElementById('category-select');
+            const viewOptions = document.querySelectorAll('.view-option');
+            const booksGrid = document.getElementById('books-grid');
+            const booksList = document.getElementById('books-list');
+            const noResults = document.getElementById('no-results');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const pagination = document.getElementById('pagination');
+            const prevPageBtn = document.getElementById('prev-page');
+            const nextPageBtn = document.getElementById('next-page');
+            const currentPageSpan = document.getElementById('current-page');
+            const totalPagesSpan = document.getElementById('total-pages');
+
+            // Book items (both grid and list views)
+            const bookItems = document.querySelectorAll('.book-card, .book-list-item');
+
+            // State variables
+            let currentView = 'grid';
+            let currentPage = 1;
+            let itemsPerPage = 12;
+            let filteredBooks = Array.from(bookItems);
+            let totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
+
+            // Initialize
+            updatePagination();
+
+            // Search functionality
+            searchInput.addEventListener('input', debounce(function() {
+                filterBooks();
+            }, 300));
+
+            // Search type change
+            searchTypeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    filterBooks();
+                });
+            });
+
+            // Sort change
+            sortSelect.addEventListener('change', function() {
+                sortBooks();
+                displayBooks();
+            });
+
+            // Category filter change
+            categorySelect.addEventListener('change', function() {
+                filterBooks();
+            });
+
+            // View toggle
+            viewOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const view = this.getAttribute('data-view');
+                    setView(view);
+
+                    // Update active state
+                    viewOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Pagination click events
+            pagination.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                if (e.target.classList.contains('page-item') || e.target.parentElement.classList.contains('page-item')) {
+                    const pageItem = e.target.classList.contains('page-item') ? e.target : e.target.parentElement;
+
+                    if (pageItem.classList.contains('disabled')) {
+                        return;
+                    }
+
+                    if (pageItem.id === 'prev-page') {
+                        if (currentPage > 1) {
+                            goToPage(currentPage - 1);
+                        }
+                    } else if (pageItem.id === 'next-page') {
+                        if (currentPage < totalPages) {
+                            goToPage(currentPage + 1);
+                        }
+                    } else {
+                        const pageNum = parseInt(pageItem.textContent);
+                        if (!isNaN(pageNum)) {
+                            goToPage(pageNum);
+                        }
+                    }
+                }
+            });
+
+            // Add to cart functionality
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const bookId = this.getAttribute('data-book-id');
+                    addToCart(bookId);
+                });
+            });
+
+            // Functions
+            function filterBooks() {
+                showLoading();
+
+                setTimeout(() => {
+                    const searchTerm = searchInput.value.toLowerCase().trim();
+                    const searchType = document.querySelector('input[name="search-type"]:checked').value;
+                    const categoryFilter = categorySelect.value;
+
+                    filteredBooks = Array.from(bookItems).filter(book => {
+                        const title = book.getAttribute('data-title').toLowerCase();
+                        const author = book.getAttribute('data-author').toLowerCase();
+                        const category = book.getAttribute('data-category').toLowerCase();
+
+                        // Category filter
+                        if (categoryFilter !== 'all' && category !== categoryFilter.toLowerCase()) {
+                            return false;
+                        }
+
+                        // Search term filter
+                        if (searchTerm) {
+                            if (searchType === 'all') {
+                                return title.includes(searchTerm) ||
+                                    author.includes(searchTerm) ||
+                                    category.includes(searchTerm);
+                            } else if (searchType === 'title') {
+                                return title.includes(searchTerm);
+                            } else if (searchType === 'author') {
+                                return author.includes(searchTerm);
+                            } else if (searchType === 'category') {
+                                return category.includes(searchTerm);
+                            }
+                        }
+
+                        return true;
+                    });
+
+                    // Reset to first page when filtering
+                    currentPage = 1;
+
+                    // Sort the filtered books
+                    sortBooks();
+
+                    // Update pagination
+                    totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
+                    updatePagination();
+
+                    // Display books
+                    displayBooks();
+
+                    hideLoading();
+                }, 300); // Simulate network delay for better UX
+            }
+
+            function sortBooks() {
+                const sortValue = sortSelect.value;
+
+                filteredBooks.sort((a, b) => {
+                    const titleA = a.getAttribute('data-title');
+                    const titleB = b.getAttribute('data-title');
+                    const priceA = parseFloat(a.getAttribute('data-price'));
+                    const priceB = parseFloat(b.getAttribute('data-price'));
+
+                    switch(sortValue) {
+                        case 'price-low':
+                            return priceA - priceB;
+                        case 'price-high':
+                            return priceB - priceA;
+                        case 'title-asc':
+                            return titleA.localeCompare(titleB);
+                        case 'title-desc':
+                            return titleB.localeCompare(titleA);
+                        default: // newest
+                            return b.getAttribute('data-id') - a.getAttribute('data-id');
+                    }
+                });
+            }
+
+            function displayBooks() {
+                // Calculate start and end indices for current page
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = Math.min(startIndex + itemsPerPage, filteredBooks.length);
+                const visibleBooks = filteredBooks.slice(startIndex, endIndex);
+
+                // Hide all books first
+                bookItems.forEach(book => {
+                    book.style.display = 'none';
+                });
+
+                // Show only visible books for current page
+                if (visibleBooks.length > 0) {
+                    visibleBooks.forEach(book => {
+                        const bookId = book.getAttribute('data-id');
+
+                        // Show in grid view
+                        const gridBook = document.querySelector(`.book-card[data-id="${bookId}"]`);
+                        if (gridBook) {
+                            gridBook.style.display = currentView === 'grid' ? 'flex' : 'none';
+                        }
+
+                        // Show in list view
+                        const listBook = document.querySelector(`.book-list-item[data-id="${bookId}"]`);
+                        if (listBook) {
+                            listBook.style.display = currentView === 'list' ? 'grid' : 'none';
+                        }
+                    });
+
+                    noResults.style.display = 'none';
+                } else {
+                    noResults.style.display = 'block';
+                }
+
+                // Update page info
+                currentPageSpan.textContent = totalPages > 0 ? currentPage : 0;
+                totalPagesSpan.textContent = totalPages;
+            }
+
+            function updatePagination() {
+                // Clear existing page numbers
+                const pageItems = Array.from(pagination.querySelectorAll('.page-item:not(#prev-page):not(#next-page)'));
+                pageItems.forEach(item => item.remove());
+
+                // Add new page numbers
+                if (totalPages <= 5) {
+                    // Show all pages
+                    for (let i = 1; i <= totalPages; i++) {
+                        insertPageNumber(i);
+                    }
+                } else {
+                    // Show limited pages with ellipsis
+                    if (currentPage <= 3) {
+                        // Near start
+                        for (let i = 1; i <= 4; i++) {
+                            insertPageNumber(i);
+                        }
+                        insertEllipsis();
+                        insertPageNumber(totalPages);
+                    } else if (currentPage >= totalPages - 2) {
+                        // Near end
+                        insertPageNumber(1);
+                        insertEllipsis();
+                        for (let i = totalPages - 3; i <= totalPages; i++) {
+                            insertPageNumber(i);
+                        }
+                    } else {
+                        // Middle
+                        insertPageNumber(1);
+                        insertEllipsis();
+                        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                            insertPageNumber(i);
+                        }
+                        insertEllipsis();
+                        insertPageNumber(totalPages);
+                    }
+                }
+
+                // Update prev/next buttons
+                prevPageBtn.classList.toggle('disabled', currentPage === 1 || totalPages === 0);
+                nextPageBtn.classList.toggle('disabled', currentPage === totalPages || totalPages === 0);
+
+                // Insert next button at the end
+                pagination.appendChild(nextPageBtn);
+            }
+
+            function insertPageNumber(pageNum) {
+                const pageItem = document.createElement('a');
+                pageItem.href = '#';
+                pageItem.className = 'page-item' + (pageNum === currentPage ? ' active' : '');
+                pageItem.textContent = pageNum;
+
+                // Insert before the next button
+                pagination.insertBefore(pageItem, nextPageBtn);
+            }
+
+            function insertEllipsis() {
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'page-item disabled';
+                ellipsis.textContent = '...';
+
+                // Insert before the next button
+                pagination.insertBefore(ellipsis, nextPageBtn);
+            }
+
+            function goToPage(pageNum) {
+                if (pageNum < 1 || pageNum > totalPages) {
+                    return;
+                }
+
+                currentPage = pageNum;
+                updatePagination();
+                displayBooks();
+
+                // Scroll to top of books container
+                document.querySelector('.books-container').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function setView(view) {
+                currentView = view;
+
+                if (view === 'grid') {
+                    booksGrid.style.display = 'grid';
+                    booksList.style.display = 'none';
+                } else {
+                    booksGrid.style.display = 'none';
+                    booksList.style.display = 'flex';
+                }
+
+                displayBooks();
+            }
+
+            function showLoading() {
+                loadingOverlay.style.opacity = '1';
+                loadingOverlay.style.visibility = 'visible';
+            }
+
+            function hideLoading() {
+                loadingOverlay.style.opacity = '0';
+                loadingOverlay.style.visibility = 'hidden';
+            }
+
+            function addToCart(bookId) {
+                // Here you would typically make an AJAX call to add the book to the cart
+                console.log(`Adding book ${bookId} to cart`);
+
+                // Show success message
+                const toast = document.createElement('div');
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.right = '20px';
+                toast.style.backgroundColor = '#2ecc71';
+                toast.style.color = 'white';
+                toast.style.padding = '1rem';
+                toast.style.borderRadius = '4px';
+                toast.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+                toast.style.zIndex = '9999';
+                toast.style.transition = 'all 0.3s ease';
+                toast.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i> Book added to cart!';
+
+                document.body.appendChild(toast);
+
+                // Update cart count
+                const cartCount = document.querySelector('.cart-count');
+                if (cartCount) {
+                    cartCount.textContent = parseInt(cartCount.textContent) + 1;
+                }
+
+                // Remove toast after 3 seconds
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }
+
+            // Utility function for debouncing
+            function debounce(func, delay) {
+                let timeout;
+                return function() {
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(context, args), delay);
+                };
+            }
+        });
+    </script>
+{% endblock %}
