@@ -6,7 +6,7 @@
     <section class="hero">
         <h1>Discover Your Next Favorite Book</h1>
         <p>Explore our vast collection of books across all genres</p>
-        <a href="{{ path('app_book_index') }}" class="btn">Browse Collection</a>
+        <a href="{{ path('app_book_public_index') }}" class="btn">Browse Collection</a>
     </section>
 
     <div class="container">
@@ -34,7 +34,7 @@
                         <div class="book-price">${{ book.price }}</div>
                         <div class="book-description">{{ book.description|slice(0, 100) }}{% if book.description|length > 100 %}...{% endif %}</div>
                         <div class="book-actions">
-                            <a href="{{ path('app_book_show', {'id': book.id}) }}" class="btn btn-sm">View Details</a>
+                            <a href="{{ path('app_book_public_show', {'id': book.id}) }}" class="btn btn-sm">View Details</a>
                             <button class="btn btn-sm">Add to Cart</button>
                         </div>
                     </div>
