@@ -1,243 +1,208 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}{{ book.title }} - BookStore{% endblock %}
+{% block title %}
+	{{ book.title }}
+	- BookStore
+{% endblock %}
 
 {% block body %}
-    <div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
-        <a href="{{ path('app_book_public_index') }}" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; color: #495057; transition: color 0.2s;">
-            <i class="fas fa-arrow-left"></i> Back to Books
-        </a>
+	<div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+		<a href="{{ path('app_book_public_index') }}" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; color: #495057; transition: color 0.2s;">
+			<i class="fas fa-arrow-left"></i>
+			Back to Books
+		</a>
 
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); padding: 2rem;">
-            <div style="text-align: center;">
-                <img src="{{ book.imageUrl }}" alt="{{ book.title }}" style="max-width: 100%; max-height: 500px; object-fit: contain; border-radius: 8px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);">
+		<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); padding: 2rem;">
+			<div style="text-align: center;">
+				<img src="{{ book.imageUrl }}" alt="{{ book.title }}" style="max-width: 100%; max-height: 500px; object-fit: contain; border-radius: 8px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);">
 
-                {% if book.category %}
-                    <div style="margin-top: 1.5rem;">
-                        <span style="background-color: #e9ecef; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.9rem; color: #495057; display: inline-block;">
-                            <i class="fas fa-tag" style="margin-right: 0.5rem;"></i>{{ book.category.name }}
-                        </span>
-                    </div>
-                {% endif %}
-            </div>
+				{% if book.category %}
+					<div style="margin-top: 1.5rem;">
+						<span style="background-color: #e9ecef; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.9rem; color: #495057; display: inline-block;">
+							<i class="fas fa-tag" style="margin-right: 0.5rem;"></i>
+							{{ book.category.name }}
+						</span>
+					</div>
+				{% endif %}
+			</div>
 
-            <div>
-                <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: #212529;">{{ book.title }}</h1>
-                <p style="font-size: 1.2rem; color: #868e96; margin-bottom: 1.5rem;">by <span style="font-style: italic; color: #495057;">{{ book.author }}</span></p>
+			<div>
+				<h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: #212529;">{{ book.title }}</h1>
+				<p style="font-size: 1.2rem; color: #868e96; margin-bottom: 1.5rem;">by
+					<span style="font-style: italic; color: #495057;">{{ book.author }}</span>
+				</p>
 
-                <div style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--primary-color);">${{ book.price }}</div>
+				<div style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--primary-color);">${{ book.price }}</div>
 
-                <div style="margin-bottom: 2rem; line-height: 1.8; color: #495057;">
-                    {{ book.description }}
-                </div>
+				<div style="margin-bottom: 2rem; line-height: 1.8; color: #495057;">
+					{{ book.description }}
+				</div>
 
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
-                    <div style="background-color: #f8f9fa; padding: 1rem; border-radius: 8px; flex: 1; min-width: 150px;">
-                        <div style="font-size: 0.9rem; color: #868e96; margin-bottom: 0.5rem;">Publication Date</div>
-                        <div style="font-weight: 600;">{{ book.foundation|date('F j, Y') }}</div>
-                    </div>
+				<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+					<div style="background-color: #f8f9fa; padding: 1rem; border-radius: 8px; flex: 1; min-width: 150px;">
+						<div style="font-size: 0.9rem; color: #868e96; margin-bottom: 0.5rem;">Publication Date</div>
+						<div style="font-weight: 600;">{{ book.foundation|date('F j, Y') }}</div>
+					</div>
 
-                    <div style="background-color: #f8f9fa; padding: 1rem; border-radius: 8px; flex: 1; min-width: 150px;">
-                        <div style="font-size: 0.9rem; color: #868e96; margin-bottom: 0.5rem;">Stock Status</div>
-                        <div style="font-weight: 600; {% if book.stock < 10 %}color: #e67e22;{% elseif book.stock <= 0 %}color: #e74c3c;{% else %}color: #2ecc71;{% endif %}">
-                            {% if book.stock > 0 %}
-                                In Stock ({{ book.stock }} available)
-                            {% else %}
-                                Out of Stock
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+					<div style="background-color: #f8f9fa; padding: 1rem; border-radius: 8px; flex: 1; min-width: 150px;">
+						<div style="font-size: 0.9rem; color: #868e96; margin-bottom: 0.5rem;">Stock Status</div>
+						<div style="font-weight: 600; {% if book.stock < 10 %}color: #e67e22;{% elseif book.stock <= 0 %}color: #e74c3c;{% else %}color: #2ecc71;{% endif %}">
+							{% if book.stock > 0 %}
+								In Stock ({{ book.stock }}
+								available)
+							{% else %}
+								Out of Stock
+							{% endif %}
+						</div>
+					</div>
+				</div>
 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button class="btn add-to-cart-btn" data-book-id="{{ book.id }}" style="display: flex; align-items: center; gap: 0.5rem; background-color: #e74c3c;">
-                        <i class="fas fa-shopping-cart"></i> Add to Cart
-                    </button>
+				<div style="display: flex; gap: 1rem; margin-top: 2rem;">
+					<button class="btn add-to-cart-btn" data-book-id="{{ book.id }}" style="display: flex; align-items: center; gap: 0.5rem; background-color: #e74c3c;">
+						<i class="fas fa-shopping-cart"></i>
+						Add to Cart
+					</button>
 
-                    <button class="btn" style="background-color: #868e96; display: flex; align-items: center; gap: 0.5rem;">
-                        <i class="far fa-heart"></i> Add to Wishlist
-                    </button>
-                </div>
+					<button class="btn" style="background-color: #868e96; display: flex; align-items: center; gap: 0.5rem;">
+						<i class="far fa-heart"></i>
+						Add to Wishlist
+					</button>
+				</div>
 
-                <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #dee2e6;">
-                    <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Share this book</h3>
-                    <div style="display: flex; gap: 1rem;">
-                        <a href="#" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background-color: #3b5998; color: white; border-radius: 50%;">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background-color: #1da1f2; color: white; border-radius: 50%;">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background-color: #0077b5; color: white; border-radius: 50%;">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background-color: #25D366; color: white; border-radius: 50%;">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+				<div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #dee2e6;">
+					<h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Share this book</h3>
+					<div style="display: flex; gap: 1rem;">
+						<a href="#" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background-color: #3b5998; color: white; border-radius: 50%;">
+							<i class="fab fa-facebook-f"></i>
+						</a>
+						<a href="#" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background-color: #1da1f2; color: white; border-radius: 50%;">
+							<i class="fab fa-twitter"></i>
+						</a>
+						<a href="#" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background-color: #0077b5; color: white; border-radius: 50%;">
+							<i class="fab fa-linkedin-in"></i>
+						</a>
+						<a href="#" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background-color: #25D366; color: white; border-radius: 50%;">
+							<i class="fab fa-whatsapp"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <div style="margin-top: 3rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-                <h2 class="section-title" style="margin-bottom: 0;">You May Also Like</h2>
+		<div style="margin-top: 3rem;">
+			<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+				<h2 class="section-title" style="margin-bottom: 0;">You May Also Like</h2>
 
-                <div style="display: flex; gap: 1rem; align-items: center;">
-                    <label for="related-filter" style="font-size: 0.9rem; color: #495057;">Filter by:</label>
-                    <select id="related-filter" class="related-filter" style="padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; outline: none;">
-                        <option value="all">All Books</option>
-                        <option value="category" selected>Same Category</option>
-                        <option value="author">Same Author</option>
-                        <option value="price">Similar Price</option>
-                    </select>
-                </div>
-            </div>
+				<div style="display: flex; gap: 1rem; align-items: center;">
+					<label for="related-filter" style="font-size: 0.9rem; color: #495057;">Filter by:</label>
+					<select id="related-filter" class="related-filter" style="padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; outline: none;">
+						<option value="all">All Books</option>
+						<option value="category" selected>Same Category</option>
+						<option value="author">Same Author</option>
+						<option value="price">Similar Price</option>
+					</select>
+				</div>
+			</div>
 
-            <div class="related-books-container">
-                <div class="books-grid related-books" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
-                    {% for otherBook in books %}
-                        {% if otherBook.id != book.id %}
-                            <div class="book-card related-book-item"
-                                 data-id="{{ otherBook.id }}"
-                                 data-category="{{ otherBook.category ? otherBook.category.name : 'Uncategorized' }}"
-                                 data-author="{{ otherBook.author }}"
-                                 data-price="{{ otherBook.price }}">
-                                <div class="book-image">
-                                    <img src="{{ otherBook.imageUrl }}" alt="{{ otherBook.title }}">
-                                </div>
-                                <div class="book-info">
-                                    <div class="book-title">{{ otherBook.title }}</div>
-                                    <div class="book-author">{{ otherBook.author }}</div>
-                                    <div class="book-price">${{ otherBook.price }}</div>
-                                    <div class="book-actions">
-                                        <a href="{{ path('app_book_public_show', {'id': otherBook.id}) }}" class="btn btn-sm">View Details</a>
-                                        <button class="btn btn-sm add-to-cart-btn" data-book-id="{{ otherBook.id }}">Add to Cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+			<div class="related-books-container">
+				<div class="books-grid related-books" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+					{% for otherBook in books %}
+						{% if otherBook.id != book.id %}
+							<div class="book-card related-book-item" data-id="{{ otherBook.id }}" data-category="{{ otherBook.category ? otherBook.category.name : 'Uncategorized' }}" data-author="{{ otherBook.author }}" data-price="{{ otherBook.price }}">
+								<div class="book-image">
+									<img src="{{ otherBook.imageUrl }}" alt="{{ otherBook.title }}">
+								</div>
+								<div class="book-info">
+									<div class="book-title">{{ otherBook.title }}</div>
+									<div class="book-author">{{ otherBook.author }}</div>
+									<div class="book-price">${{ otherBook.price }}</div>
+									<div class="book-actions">
+										<a href="{{ path('app_book_public_show', {'id': otherBook.id}) }}" class="btn btn-sm">View Details</a>
+										<form action="{{ path('cart_add', { 'id': otherBook.id }) }}" method="post">
+											<button type="submit" class="btn btn-sm btn-primary">Add to Cart</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
 
-                <div class="no-results" style="text-align: center; padding: 2rem; display: none;">
-                    <p style="color: #868e96; font-size: 1.1rem;">No matching books were found. Try a different filter.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="no-results" style="text-align: center; padding: 2rem; display: none;">
+					<p style="color: #868e96; font-size: 1.1rem;">No matching books were found. Try a different filter.</p>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentBook = {
-                id: {{ book.id }},
-                category: "{{ book.category ? book.category.name : 'Uncategorized' }}",
-                author: "{{ book.author }}",
-                price: {{ book.price }}
-            };
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+const currentBook = {
+id: {{ book.id }},
+category: "{{ book.category ? book.category.name : 'Uncategorized' }}",
+author: "{{ book.author }}",
+price: {{ book.price }}
+};
 
-            const relatedFilter = document.getElementById('related-filter');
-            const relatedBooks = document.querySelectorAll('.related-book-item');
-            const noResults = document.querySelector('.no-results');
+const relatedFilter = document.getElementById('related-filter');
+const relatedBooks = document.querySelectorAll('.related-book-item');
+const noResults = document.querySelector('.no-results');
 
-            // Initial filtering (default to same category)
-            filterRelatedBooks('category');
+filterRelatedBooks('category');
 
-            // Filter change event
-            relatedFilter.addEventListener('change', function() {
-                filterRelatedBooks(this.value);
-            });
+relatedFilter.addEventListener('change', function () {
+filterRelatedBooks(this.value);
+});
 
-            // Add to cart functionality
-            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const bookId = this.getAttribute('data-book-id');
-                    addToCart(bookId);
-                });
-            });
+=const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+addToCartButtons.forEach(button => {
+button.addEventListener('click', function () {
+const bookId = this.getAttribute('data-book-id');
+addToCart(bookId);
+});
+});
 
-            // Filter related books based on selected criteria
-            function filterRelatedBooks(filterType) {
-                let visibleCount = 0;
+function filterRelatedBooks(filterType) {
+let visibleCount = 0;
 
-                relatedBooks.forEach(bookCard => {
-                    const bookId = bookCard.getAttribute('data-id');
-                    const bookCategory = bookCard.getAttribute('data-category');
-                    const bookAuthor = bookCard.getAttribute('data-author');
-                    const bookPrice = parseFloat(bookCard.getAttribute('data-price'));
+relatedBooks.forEach(bookCard => {
+const bookId = bookCard.getAttribute('data-id');
+const bookCategory = bookCard.getAttribute('data-category');
+const bookAuthor = bookCard.getAttribute('data-author');
+const bookPrice = parseFloat(bookCard.getAttribute('data-price'));
 
-                    let shouldShow;
+let shouldShow;
 
-                    switch(filterType) {
-                        case 'category':
-                            shouldShow = bookCategory === currentBook.category;
-                            break;
-                        case 'author':
-                            shouldShow = bookAuthor === currentBook.author;
-                            break;
-                        case 'price':
-                            // Show books within a 20% price range
-                            const minPrice = currentBook.price * 0.8;
-                            const maxPrice = currentBook.price * 1.2;
-                            shouldShow = bookPrice >= minPrice && bookPrice <= maxPrice;
-                            break;
-                        default: // 'all'
-                            shouldShow = true;
-                            break;
-                    }
+switch (filterType) {
+case 'category': shouldShow = bookCategory === currentBook.category;
+break;
+case 'author': shouldShow = bookAuthor === currentBook.author;
+break;
+case 'price':
+const minPrice = currentBook.price * 0.8;
+const maxPrice = currentBook.price * 1.2;
+shouldShow = bookPrice >= minPrice && bookPrice <= maxPrice;
+break;
+default: shouldShow = true;
+break;
+}
 
-                    if (shouldShow) {
-                        bookCard.style.display = 'flex';
-                        visibleCount++;
-                    } else {
-                        bookCard.style.display = 'none';
-                    }
-                });
+if (shouldShow) {
+bookCard.style.display = 'flex';
+visibleCount++;
+} else {
+bookCard.style.display = 'none';
+}
+});
 
-                // Show/hide no result message
-                if (visibleCount === 0) {
-                    noResults.style.display = 'block';
-                } else {
-                    noResults.style.display = 'none';
-                }
-            }
+if (visibleCount === 0) {
+noResults.style.display = 'block';
+} else {
+noResults.style.display = 'none';
+}
+}
 
-            // Add to cart function
-            function addToCart(bookId) {
-                // Here you would typically make an AJAX call to add the book to the cart
-                console.log(`Adding book ${bookId} to cart`);
 
-                // Show a success message
-                const toast = document.createElement('div');
-                toast.style.position = 'fixed';
-                toast.style.bottom = '20px';
-                toast.style.right = '20px';
-                toast.style.backgroundColor = '#2ecc71';
-                toast.style.color = 'white';
-                toast.style.padding = '1rem';
-                toast.style.borderRadius = '4px';
-                toast.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
-                toast.style.zIndex = '9999';
-                toast.style.transition = 'all 0.3s ease';
-                toast.textContent = 'Book added to cart!';
-
-                document.body.appendChild(toast);
-
-                // Update cart count
-                const cartCount = document.querySelector('.cart-count');
-                if (cartCount) {
-                    cartCount.textContent = parseInt(cartCount.textContent) + 1;
-                }
-
-                // Remove toast after 3 seconds
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    setTimeout(() => {
-                        document.body.removeChild(toast);
-                    }, 300);
-                }, 3000);
-            }
-        });
-    </script>
+});
+	</script>
 {% endblock %}

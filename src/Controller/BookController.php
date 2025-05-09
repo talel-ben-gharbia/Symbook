@@ -30,7 +30,7 @@ final class BookController extends AbstractController
     #[Route('/book/{id}', name: 'app_book_public_show', methods: ['GET'])]
     public function publicShow(Book $book, BookRepository $bookRepository): Response
     {
-        $books = $bookRepository->findAll(); // For "You May Also Like" section
+        $books = $bookRepository->findAll();    
         return $this->render('book/public_show.html.twig', [
             'book' => $book,
             'books' => $books,

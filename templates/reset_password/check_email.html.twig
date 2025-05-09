@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Password Reset Email Sent{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0">Password Reset Email Sent</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-envelope-check text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    
+                    <h5 class="text-center mb-3">Check Your Email</h5>
+                    
+                    <p class="mb-3">
+                        If an account matching your email exists, then an email was just sent containing a link to reset your password.
+                    </p>
+                    
+                    <div class="alert alert-info mb-3">
+                        <i class="bi bi-clock me-2"></i>
+                        This link will expire in <strong>{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}</strong>.
+                    </div>
+                    
+                    <p class="mb-4">
+                        If you don't receive an email, please check your spam folder or 
+                        <a href="{{ path('app_forgot_password_request') }}" class="text-decoration-none">try again</a>.
+                    </p>
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="{{ path('app_login') }}" class="btn btn-primary btn-lg">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Back to Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 10px;
+        border: none;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        border-bottom: none;
+    }
+    
+    .btn-primary {
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .alert-info {
+        background-color: rgba(13, 110, 253, 0.1);
+        border-color: rgba(13, 110, 253, 0.2);
+        color: #0d6efd;
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}

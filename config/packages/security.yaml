@@ -20,7 +20,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                target: app_login
+                target: app_home
 
             remember_me:
                 secret: '%kernel.secret%'
@@ -43,7 +43,6 @@ security:
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/user, roles: ROLE_USER }
-        
 
 when@test:
     security:

@@ -5,12 +5,16 @@
 
 {% block body %}
 	<div class="container-fluid vh-100">
+
 		<div
 			class="row h-100">
 			<!-- Left Side: Register Form -->
 			<div
 				class="col-md-6 d-flex flex-column justify-content-center align-items-center p-4">
 				<!-- Logo -->
+				{% for flash_error in app.flashes('verify_email_error') %}
+					<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+				{% endfor %}
 				<h2 class="text-primary mb-4">BookVerse</h2>
 
 				<!-- Heading and Subtitle -->
@@ -122,12 +126,12 @@
 	</div>
 
 
-<script>
-  function togglePassword(id) {
-    const input = document.getElementById(id);
-    if (input) {
-      input.type = input.type === 'password' ? 'text' : 'password';
-    }
-  }
-</script>
+	<script>
+		function togglePassword(id) {
+const input = document.getElementById(id);
+if (input) {
+input.type = input.type === 'password' ? 'text' : 'password';
+}
+}
+	</script>
 {% endblock %}

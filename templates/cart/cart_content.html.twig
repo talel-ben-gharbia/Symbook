@@ -1,0 +1,36 @@
+{% if items is empty %}
+    <p>Your cart is empty.</p>
+{% else %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td><img src="{{ item.book.imageUrl }}" width="80" /></td>
+                <td>{{ item.book.title }}</td>
+                <td>{{ item.book.author }}</td>
+                <td>{{ item.book.price }} TND</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.book.price * item.quantity }} TND</td>
+                <td>
+                    <a href="{{ path('cart_add', {id: item.book.id}) }}" class="btn btn-sm btn-success">+</a>
+                    <a href="{{ path('cart_decrement', {id: item.book.id}) }}" class="btn btn-sm btn-warning">-</a>
+                    <a href="{{ path('cart_remove', {id: item.book.id}) }}" class="btn btn-sm btn-danger">x</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h4>Total: {{ total }} TND</h4>
+    <a href="{{ path('cart_clear') }}" class="btn btn-outline-danger">Clear Cart</a>
+{% endif %}

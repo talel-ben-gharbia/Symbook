@@ -9,6 +9,7 @@
 		</title>
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>📚</text></svg>">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 		<style>
 			/* Reset and base styles */
 			* {
@@ -639,11 +640,13 @@
 						Register
 					</a>
 				{% endif %}
-				<a href="#" class="nav-link">
+				<button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
 					<i class="fas fa-shopping-cart"></i>
 					Cart
-					<span class="cart-count">0</span>
-				</a>
+					<span class="cart-count">{{ app.session.get('cart') ? app.session.get('cart')|length : 0 }}</span>
+				</button>
+
+
 			</div>
 		</header>
 
@@ -750,7 +753,7 @@ mobileToggle.addEventListener('click', function () {
 navActions.classList.toggle('active');
 });
 
-// Shrink header on scroll
+
 const header = document.querySelector('.header');
 window.addEventListener('scroll', function () {
 if (window.scrollY > 50) {
@@ -760,11 +763,11 @@ header.classList.remove('scrolled');
 }
 });
 
-// Category filtering
+
 const categoryButtons = document.querySelectorAll('.category-btn');
 if (categoryButtons.length > 0) {
 categoryButtons.forEach(button => {
-button.addEventListener('click', function () { // Remove the active class from all buttons
+button.addEventListener('click', function () {
 categoryButtons.forEach(btn => btn.classList.remove('active'));
 
 // Add an active class to clicked button
@@ -797,6 +800,28 @@ card.style.display = 'none';
 });
 		</script>
 		{% block javascripts %}{% endblock %}
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 	</body>
 </html>
+
+<!-- Cart Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="cartModalLabel">Your Cart</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				{{ render(controller('App\\Controller\\CartController::cartPartial')) }}
+			</div>
+			<div class="modal-footer">
+				<a href="{{ path('app_cart') }}" class="btn btn-primary">Go to Cart</a>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

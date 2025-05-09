@@ -43,17 +43,17 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-    {   
+    {
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-        
-        $role=$token->getRoleNames();
-        if(in_array('ROLE_ADMIN',$role)){
+
+        // For example:
+        $roles=$token->getRoleNames();
+        if(in_array(["ROLE_ADMIN"],$roles) ){
             return new RedirectResponse($this->urlGenerator->generate('app_dashboard'));
-        }   
+        }
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
-        
         throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 

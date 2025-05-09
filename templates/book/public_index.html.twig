@@ -318,7 +318,6 @@
 	<div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
 		<h1 class="section-title">Browse Our Collection</h1>
 
-		<!-- Search Container -->
 		<div class="search-container">
 			<div class="search-input-container">
 				<i class="fas fa-search search-icon"></i>
@@ -345,7 +344,6 @@
 			</div>
 		</div>
 
-		<!-- Filter Container -->
 		<div class="filter-container">
 			<div class="filter-group">
 				<span class="filter-label">Sort by:</span>
@@ -379,14 +377,13 @@
 		</div>
 
 
-		<div
-			class="books-container">
-			
+		<div class="books-container">
+
 			<div class="loading-overlay" id="loading-overlay">
 				<div class="loading-spinner"></div>
 			</div>
 
-			
+
 			<div class="books-grid" id="books-grid">
 				{% for book in books %}
 					<div class="book-card" data-id="{{ book.id }}" data-title="{{ book.title }}" data-author="{{ book.author }}" data-category="{{ book.category ? book.category.name : 'Uncategorized' }}" data-price="{{ book.price }}">
@@ -403,14 +400,16 @@
 							</div>
 							<div class="book-actions">
 								<a href="{{ path('app_book_public_show', {'id': book.id}) }}" class="btn btn-sm">View Details</a>
-								<button class="btn btn-sm add-to-cart-btn" data-book-id="{{ book.id }}">Add to Cart</button>
+								<form action="{{ path('cart_add', { 'id': book.id }) }}" method="post">
+									<button type="submit" class="btn btn-sm btn-primary">Add to Cart</button>
+								</form>
 							</div>
 						</div>
 					</div>
 				{% endfor %}
 			</div>
 
-			<!-- Books List View (Hidden by default) -->
+
 			<div class="books-list" id="books-list" style="display: none;">
 				{% for book in books %}
 					<div class="book-list-item" data-id="{{ book.id }}" data-title="{{ book.title }}" data-author="{{ book.author }}" data-category="{{ book.category ? book.category.name : 'Uncategorized' }}" data-price="{{ book.price }}">
