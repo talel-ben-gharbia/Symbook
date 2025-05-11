@@ -403,9 +403,6 @@
         <div class="header-container">
             <h1 class="dashboard-title">Order #{{ order.id }} Details</h1>
             <div class="action-buttons">
-                <a href="{{ path('app_order_edit', {'id': order.id}) }}" class="btn btn-primary">
-                    <i class="bi bi-pencil"></i> Edit Order
-                </a>
                 <a href="{{ path('app_order_index') }}" class="btn btn-secondary">
                     <i class="bi bi-arrow-left"></i> Back to List
                 </a>
@@ -438,10 +435,8 @@
                     <div class="order-info-value">{{ order.customer ?? 'John Doe' }}</div>
                     
                     <div class="order-info-label">Email:</div>
-                    <div class="order-info-value">{{ order.email ?? 'customer@example.com' }}</div>
+                    <div class="order-info-value">{{ order.customer.email ?? 'customer@example.com' }}</div>
                     
-                    <div class="order-info-label">Phone:</div>
-                    <div class="order-info-value">{{ order.phone ?? '+1 (555) 123-4567' }}</div>
                 </div>
             </div>
         </div>
@@ -459,30 +454,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% if order.OrderItems is defined and order.OrderItems is not empty %}
-                        {% set items = order.OrderItems|json_decode %}
-                        {% if items is iterable %}
-                            {% for item in items %}
-                                <tr>
-                                    <td>
-                                        <div class="product-info">
-                                            <img src="{{ item.imageUrl ?? '/placeholder.jpg' }}" alt="{{ item.title }}" class="product-image">
-                                            <div class="product-details">
-                                                <div class="product-title">{{ item.title }}</div>
-                                                <div class="product-author">{{ item.author }}</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>${{ item.price|number_format(2) }}</td>
-                                    <td>{{ item.quantity }}</td>
-                                    <td>${{ item.subtotal|number_format(2) }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% else %}
+                    {% set items = order.getOrderItems() %}
+                    {% if items is not empty %}
+                        {% for item in items %}
                             <tr>
-                                <td colspan="4" class="text-center py-4">No items found or invalid format</td>
+                                <td>
+                                    <div class="product-info">
+                                        <img src="{{ item.imageUrl }}" alt="{{ item.title }}" class="product-image">
+                                        <div class="product-details">
+                                            <div class="product-title">{{ item.title }}</div>
+                                            <div class="product-author">{{ item.author }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ item.price|number_format(2) }} Dt</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.subtotal|number_format(2) }} Dt</td>
                             </tr>
-                        {% endif %}
+                        {% endfor %}
                     {% else %}
                         <tr>
                             <td colspan="4" class="text-center py-4">No items found</td>
@@ -497,26 +486,21 @@
             <h2 class="order-summary-title">Order Summary</h2>
             <div class="order-summary-grid">
                 {% set subtotal = 0 %}
-                {% if order.OrderItems is defined and order.OrderItems is not empty %}
-                    {% set items = order.OrderItems |json_decode %}
-                    {% if items is iterable %}
-                        {% for item in items %}
-                            {% set subtotal = subtotal + (item.subtotal ?? 0) %}
-                        {% endfor %}
-                    {% endif %}
+                {% set items = order.getOrderItems() %}
+                {% if items is not empty %}
+                    {% for item in items %}
+                        {% set subtotal = subtotal + item.subtotal %}
+                    {% endfor %}
                 {% endif %}
                 
                 <div class="order-summary-label">Subtotal:</div>
-                <div class="order-summary-value">${{ subtotal > 0 ? subtotal|number_format(2) : order.Total|default('0.00')|number_format(2) }}</div>
+                <div class="order-summary-value">{{ subtotal > 0 ? subtotal|number_format(2) : order.Total|default('0.00')|number_format(2) }} Dt</div>
                 
                 <div class="order-summary-label">Shipping:</div>
-                <div class="order-summary-value">$0.00</div>
-                
-                <div class="order-summary-label">Tax:</div>
-                <div class="order-summary-value">$0.00</div>
+                <div class="order-summary-value">7.00 Dt</div>
                 
                 <div class="order-summary-label order-summary-total">Total:</div>
-                <div class="order-summary-value order-summary-total">${{ order.Total|default(subtotal)|number_format(2) }}</div>
+                <div class="order-summary-value order-summary-total">{{ order.Total|default(subtotal)|number_format(2) + 7 }} Dt</div>
             </div>
         </div>
 

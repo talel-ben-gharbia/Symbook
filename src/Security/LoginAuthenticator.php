@@ -49,12 +49,15 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // For example:
-        $roles=$token->getRoleNames();
-        if(in_array(["ROLE_ADMIN"],$roles) ){
+        $roles = $token->getRoleNames();
+        if (in_array("ROLE_ADMIN", $roles)) {
             return new RedirectResponse($this->urlGenerator->generate('app_dashboard'));
         }
+
+
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+
+        throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
     }
 
     protected function getLoginUrl(Request $request): string

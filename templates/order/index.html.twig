@@ -1,0 +1,312 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Panel - Orders{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        :root {
+            --dark-bg: #1a2332;
+            --light-bg: #ffffff;
+            --card-bg: #f8f9fa;
+            --text-light: #ffffff;
+            --text-dark: #000000;
+            --completed: #e6f7ee;
+            --completed-text: #10b981;
+            --processing: #fef9c3;
+            --processing-text: #ca8a04;
+            --pending: #e0e7ff;
+            --pending-text: #4f46e5;
+            --cancelled: #fee2e2;
+            --cancelled-text: #ef4444;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            padding: 20px 0;
+            flex-shrink: 0;
+            height: 100vh;
+            position: fixed;
+            z-index: 100;
+        }
+
+        .sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 0 20px 20px;
+            margin: 0;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-nav a i {
+            margin-right: 12px;
+            font-size: 1.25rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        .btn-add {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-add:hover {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .orders-section {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: #f3f4f6;
+        }
+
+        .filter-tab.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-weight: 600;
+            color: #4b5563;
+            background-color: #f9fafb;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .orders-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+
+        .orders-table tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .orders-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-processing {
+            background-color: var(--processing);
+            color: var(--processing-text);
+        }
+
+        .status-completed {
+            background-color: var(--completed);
+            color: var(--completed-text);
+        }
+
+        .status-pending {
+            background-color: var(--pending);
+            color: var(--pending-text);
+        }
+
+        .status-cancelled {
+            background-color: var(--cancelled);
+            color: var(--cancelled-text);
+        }
+
+        .action-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="sidebar">
+        <h1 class="sidebar-title">Admin Panel</h1>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="{{ path('app_dashboard') }}">
+                    <i class="bi bi-grid-1x2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_book_index') }}">
+                    <i class="bi bi-book"></i>
+                    Books
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_category_index') }}">
+                    <i class="bi bi-tag"></i>
+                    Categories
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_order_index') }}" class="active">
+                    <i class="bi bi-cart"></i>
+                    Orders
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bi bi-people"></i>
+                    Customers
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header-container">
+            <h1 class="dashboard-title">Order Management</h1>
+        </div>
+
+        <div class="filter-tabs">
+            <div class="filter-tab active">All</div>
+            <div class="filter-tab">Pending</div>
+            <div class="filter-tab">Processing</div>
+            <div class="filter-tab">Completed</div>
+            <div class="filter-tab">Cancelled</div>
+        </div>
+
+        <div class="orders-section">
+            <div class="table-responsive">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Products</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.customer ?? 'John Doe' }}</td>
+                            <td>{{ order.OrderItems ? order.OrderItems|length ~ ' items' : '2 items' }}</td>
+                            <td>{{ order.Total +7}} Dt</td>
+                            <td>
+                                <span class="status-badge status-{{ order.Status|lower|default('processing') }}">
+                                    {{ order.Status|capitalize|default('Processing') }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ path('app_order_show', {'id': order.id}) }}" class="action-link">View Details</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4">No orders found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
