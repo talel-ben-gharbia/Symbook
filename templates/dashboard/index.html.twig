@@ -4,39 +4,74 @@
 {% endblock %}
 
 {% block stylesheets %}
+	{{ parent() }}
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 	<style>:root
 	{
-		--bs-primary-rgb: 13, 110, 253;
-		--bs-success-rgb: 25, 135, 84;
+		--dark-bg: #1a2332;
+		--light-bg: #ffffff;
+		--card-bg: #f8f9fa;
+		--text-light: #ffffff;
+		--text-dark: #000000;
+		--completed: #e6f7ee;
+		--completed-text: #10b981;
 	}
 
 	body {
+		margin: 0;
+		padding: 0;
 		font-family: 'Inter', sans-serif;
-		overflow-x: hidden;
-	}
-
-	.sidebar {
-		background-color: #1a2332;
+		display: flex;
 		min-height: 100vh;
 	}
 
-	.sidebar-link {
-		color: rgba(255, 255, 255, 0.85);
-		text-decoration: none;
-		padding: 0.75rem 1rem;
-		display: flex;
-		align-items: center;
-		transition: all 0.2s;
+	.sidebar {
+		width: 240px;
+		background-color: var(--dark-bg);
+		color: var(--text-light);
+		padding: 20px 0;
+		flex-shrink: 0;
+		height: 100vh;
+		position: fixed;
+		z-index: 100;
 	}
 
-	.sidebar-link:hover,
-	.sidebar-link.active {
-		color: #fff;
+	.sidebar-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		padding: 0 20px 20px;
+		margin: 0;
+	}
+
+	.sidebar-nav {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.sidebar-nav li {
+		margin-bottom: 5px;
+	}
+
+	.sidebar-nav a {
+		display: flex;
+		align-items: center;
+		padding: 12px 20px;
+		color: var(--text-light);
+		text-decoration: none;
+		transition: background-color 0.2s;
+	}
+
+	.sidebar-nav a:hover,
+	.sidebar-nav a.active {
 		background-color: rgba(255, 255, 255, 0.1);
 	}
 
-	.sidebar-link i {
-		margin-right: 0.75rem;
+	.sidebar-nav a i {
+		margin-right: 12px;
+		font-size: 1.25rem;
+		width: 20px;
+		text-align: center;
 	}
 
 	.status-badge {
@@ -50,7 +85,6 @@
 	}
 </style>{% endblock %}{% block javascripts %}
 {{ parent() }}
-<!-- Bootstrap JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>{% endblock %}{% block body %}
 <div class="container-fluid">
 	<div
@@ -61,7 +95,7 @@
 				<div class="px-3 mb-3">
 					<h5 class="text-white">Admin Panel</h5>
 				</div>
-				<ul class="nav flex-column">
+				<ul class="nav flex-column sidebar-nav">
 					<li class="nav-item">
 						<a class="sidebar-link active" href="{{ path('app_dashboard') }}">
 							<i class="bi bi-grid-1x2"></i>
@@ -75,13 +109,19 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="sidebar-link" href="{{path('app_order_index')}}">
+						<a class="sidebar-link" href="{{ path('app_category_index') }}">
+							<i class="bi bi-book"></i>
+							Categories
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="sidebar-link" href="{{ path('app_order_index') }}">
 							<i class="bi bi-cart"></i>
 							Orders
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="sidebar-link" href="#">
+						<a class="sidebar-link" href="{{ path('app_user_index') }}">
 							<i class="bi bi-people"></i>
 							Customers
 						</a>
@@ -97,7 +137,7 @@
 		</div>
 
 		<!-- Main content -->
-		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 offset-md-3 offset-lg-2">
 			<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 				<h1 class="h2">Dashboard Overview</h1>
 				<div class="btn-toolbar mb-2 mb-md-0">
@@ -142,8 +182,6 @@
 					</div>
 				</div>
 			</div>
-
-
 		</main>
 	</div>
 </div>{% endblock %}

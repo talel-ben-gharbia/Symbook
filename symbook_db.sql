@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 11 mai 2025 à 13:42
+-- Généré le : lun. 12 mai 2025 à 16:15
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -101,7 +101,8 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20250508195622', '2025-05-08 21:56:33', 43),
 ('DoctrineMigrations\\Version20250509143226', '2025-05-09 16:32:43', 112),
 ('DoctrineMigrations\\Version20250510184037', '2025-05-10 20:40:59', 129),
-('DoctrineMigrations\\Version20250510185602', '2025-05-10 20:56:09', 52);
+('DoctrineMigrations\\Version20250510185602', '2025-05-10 20:56:09', 52),
+('DoctrineMigrations\\Version20250512111904', '2025-05-12 13:20:45', 16);
 
 -- --------------------------------------------------------
 
@@ -147,7 +148,9 @@ CREATE TABLE `order` (
 
 INSERT INTO `order` (`id`, `customer_id`, `order_date`, `order_items`, `total`, `status`) VALUES
 (1, 17, '2025-05-10', '[{\"book_id\":2,\"title\":\"The Hobbit\",\"author\":\"J.R.R. Tolkien\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/712cDO7d73L._SY466_.jpg\",\"price\":\"30.00\",\"quantity\":1,\"subtotal\":30.0}]', 30, 'pending'),
-(2, 17, '2025-05-10', '[{\"book_id\":3,\"title\":\"The Adventures of Sherlock Holmes\",\"author\":\"Arthur Conan Doyle\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61W8vD3LBRL._SY425_.jpg\",\"price\":\"30.00\",\"quantity\":1,\"subtotal\":30.0},{\"book_id\":4,\"title\":\"To Kill a Mockingbird\",\"author\":\"Harper Lee\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71FxgtFKcQL.jpg\",\"price\":\"60.00\",\"quantity\":1,\"subtotal\":60.0}]', 90, 'pending');
+(2, 17, '2025-05-10', '[{\"book_id\":3,\"title\":\"The Adventures of Sherlock Holmes\",\"author\":\"Arthur Conan Doyle\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61W8vD3LBRL._SY425_.jpg\",\"price\":\"30.00\",\"quantity\":1,\"subtotal\":30.0},{\"book_id\":4,\"title\":\"To Kill a Mockingbird\",\"author\":\"Harper Lee\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71FxgtFKcQL.jpg\",\"price\":\"60.00\",\"quantity\":1,\"subtotal\":60.0}]', 90, 'pending'),
+(3, 16, '2025-05-12', '[{\"book_id\":2,\"title\":\"The Hobbit\",\"author\":\"J.R.R. Tolkien\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/712cDO7d73L._SY466_.jpg\",\"price\":\"30.00\",\"quantity\":2,\"subtotal\":60.0},{\"book_id\":7,\"title\":\"Dune\",\"author\":\"Frank Herbert\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/41JVFor1FpL._SY445_SX342_.jpg\",\"price\":\"45.00\",\"quantity\":3,\"subtotal\":135.0}]', 195, 'pending'),
+(4, 16, '2025-05-12', '[{\"book_id\":5,\"title\":\"Harry Potter and the Sorcerer\'s Stone\",\"author\":\"J.K. Rowling\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71-++hbbERL.jpg\",\"price\":\"45.00\",\"quantity\":1,\"subtotal\":45.0}]', 45, 'pending');
 
 -- --------------------------------------------------------
 
@@ -183,21 +186,22 @@ CREATE TABLE `user` (
   `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
   `password` varchar(255) NOT NULL,
   `is_verified` tinyint(1) NOT NULL,
-  `username` varchar(255) NOT NULL
+  `username` varchar(255) NOT NULL,
+  `join_date` date DEFAULT curdate()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `roles`, `password`, `is_verified`, `username`) VALUES
-(1, 'talelbengharbia213@gmail.com', '[\"ROLE_ADMIN\",\"ROLE_USER\"]', '$2y$13$zbaiBgr5SiUF3E9t8TX8wuX0ZzSWIOKND1iNhlmt7sgRG4LQVGAbO', 0, 'talel'),
-(2, 'exemple1@gmail.com', '[\"ROLE_USER\"]', '$2y$13$6aaUSci9FwOKTnlMc4.z8Ok/mdTlftOYRMuMCGBW.0qzYI8XEffVG', 0, 'exemple1'),
-(13, 'exemple5@gmail.com', '[\"ROLE_USER\"]', '$2y$13$NEuyJlzSTbnOmuzKFMtKyuBCr6T4gHew2CwUWzh9qHIIx2D5aUUy2', 1, 'exemple5'),
-(14, 'exemple6@gmail.com', '[\"ROLE_USER\"]', '$2y$13$dhmXPPFDQTG4fXwuSQ/aTOAqoOZPh5XcX9JBnQ9YoFFJHzx6DFiQ6', 1, 'exemple6'),
-(15, 'exemple4@gmail.com', '[\"ROLE_USER\"]', '$2y$13$5rGNsT1m/svz/BFjgmWp7eXUrQW7MOpeNiPfniFz7nqlghsX/Nh7m', 1, 'exemple4'),
-(16, 'exemple2@gmail.com', '[\"ROLE_USER\"]', '$2y$13$l4RTaiOm5du53HXcxdm7Cu3O/A6TafbGo42Wih90pOUU/3fis.Jvq', 1, 'exemple2'),
-(17, 'dhibyoussef@gmail.com', '[\"ROLE_USER\"]', '$2y$13$IRDbG4ykhtofBbRp.xvcE.2xQYCNbHX8BWZYknCfYi6YTBssaO9cK', 1, 'dhib');
+INSERT INTO `user` (`id`, `email`, `roles`, `password`, `is_verified`, `username`, `join_date`) VALUES
+(1, 'talelbengharbia213@gmail.com', '[\"ROLE_ADMIN\",\"ROLE_USER\"]', '$2y$13$zbaiBgr5SiUF3E9t8TX8wuX0ZzSWIOKND1iNhlmt7sgRG4LQVGAbO', 0, 'talel', '2025-05-12'),
+(2, 'exemple1@gmail.com', '[\"ROLE_USER\"]', '$2y$13$6aaUSci9FwOKTnlMc4.z8Ok/mdTlftOYRMuMCGBW.0qzYI8XEffVG', 0, 'exemple1', '2025-05-12'),
+(13, 'exemple5@gmail.com', '[\"ROLE_USER\"]', '$2y$13$NEuyJlzSTbnOmuzKFMtKyuBCr6T4gHew2CwUWzh9qHIIx2D5aUUy2', 1, 'exemple5', '2025-05-12'),
+(14, 'exemple6@gmail.com', '[\"ROLE_USER\"]', '$2y$13$dhmXPPFDQTG4fXwuSQ/aTOAqoOZPh5XcX9JBnQ9YoFFJHzx6DFiQ6', 1, 'exemple6', '2025-05-12'),
+(15, 'exemple4@gmail.com', '[\"ROLE_USER\"]', '$2y$13$5rGNsT1m/svz/BFjgmWp7eXUrQW7MOpeNiPfniFz7nqlghsX/Nh7m', 1, 'exemple4', '2025-05-12'),
+(16, 'exemple2@gmail.com', '[\"ROLE_USER\"]', '$2y$13$l4RTaiOm5du53HXcxdm7Cu3O/A6TafbGo42Wih90pOUU/3fis.Jvq', 1, 'exemple2', '2025-05-12'),
+(17, 'dhibyoussef@gmail.com', '[\"ROLE_USER\"]', '$2y$13$IRDbG4ykhtofBbRp.xvcE.2xQYCNbHX8BWZYknCfYi6YTBssaO9cK', 1, 'dhib', '2025-05-12');
 
 --
 -- Index pour les tables déchargées
@@ -278,7 +282,7 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT pour la table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `reset_password_request`

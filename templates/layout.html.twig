@@ -387,6 +387,8 @@
 				color: white;
 				padding: 4rem 0 0;
 				margin-top: 4rem;
+				position: relative;
+				z-index: 1000;
 			}
 
 			.footer-container {
@@ -621,7 +623,7 @@
 					Books
 				</a>
 				{% if is_granted('ROLE_USER') %}
-					<a href="#" class="nav-link">
+					<a href="{{path('app_user_profile' , { 'id': app.user.id })}}" class="nav-link">
 						<i class="fas fa-user"></i>
 						My Account
 					</a>
