@@ -50,7 +50,7 @@ class CheckoutController extends AbstractController
         }
 
         // Initialize Stripe with your secret key
-        Stripe::setApiKey($_ENV['sk_test_51RNwUL2NV2gQ1OgSSK14HVZzD49fyk9MHro0tGbyfLSDDXZDAyFH8bBLXNop1M69ymnlX4ige2P2QVEeHJ2OV5jH00SD8xCGjz']);
+        Stripe::setApiKey($_ENV['']);
         try {
             // Create Stripe checkout session
             $session = StripeCheckoutSession::create([
