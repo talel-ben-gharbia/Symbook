@@ -425,6 +425,11 @@
                             {{ order.Status|capitalize|default('Processing') }}
                         </span>
                     </div>
+
+                    <div class="order-info-label">Payment method:</div>
+                    <div class="order-info-value">
+                        {{order.orderItems.payment_method}}
+                    </div>
                 </div>
             </div>
             
@@ -454,7 +459,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% set items = order.getOrderItems() %}
+                    {% set items = order.orderItems.items %}
                     {% if items is not empty %}
                         {% for item in items %}
                             <tr>
@@ -486,7 +491,7 @@
             <h2 class="order-summary-title">Order Summary</h2>
             <div class="order-summary-grid">
                 {% set subtotal = 0 %}
-                {% set items = order.getOrderItems() %}
+                {% set items = order.orderItems.items %}
                 {% if items is not empty %}
                     {% for item in items %}
                         {% set subtotal = subtotal + item.subtotal %}

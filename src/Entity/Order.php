@@ -17,7 +17,7 @@ class Order
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $customer = null;
+    private ?User $customer = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $OrderDate = null;
@@ -36,12 +36,12 @@ class Order
         return $this->id;
     }
 
-    public function getCustomer(): ?user
+    public function getCustomer(): ?User
     {
         return $this->customer;
     }
 
-    public function setCustomer(?user $customer): static
+    public function setCustomer(?User $customer): static
     {
         $this->customer = $customer;
 

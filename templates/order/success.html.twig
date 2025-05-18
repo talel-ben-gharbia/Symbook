@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Payment Successful{% endblock %}
+
+{% block body %}
+<div class="alert alert-success text-center my-5">
+    <h2>🎉 Thank you!</h2>
+    <p>Your payment was successful. Your order has been placed.</p>
+    <a href="{{ path('app_book_public_index') }}" class="btn btn-primary mt-3">Continue Shopping</a>
+</div>
+{% endblock %}

@@ -1,363 +1,358 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add New Book{% endblock %}
+{% block title %}Add New Book
+{% endblock %}
 
 {% block stylesheets %}
-    <style>
-        :root {
-            --dark-bg: #1a2332;
-            --light-bg: #ffffff;
-            --card-bg: #f8f9fa;
-            --text-light: #ffffff;
-            --text-dark: #000000;
-            --completed: #e6f7ee;
-            --completed-text: #10b981;
-        }
-        
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        .sidebar {
-            width: 240px;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            padding: 20px 0;
-            flex-shrink: 0;
-            height: 100vh;
-            position: fixed;
-            z-index: 100;
-        }
-        
-        .sidebar-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            padding: 0 20px 20px;
-            margin: 0;
-        }
-        
-        .sidebar-nav {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .sidebar-nav li {
-            margin-bottom: 5px;
-        }
-        
-        .sidebar-nav a {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            color: var(--text-light);
-            text-decoration: none;
-            transition: background-color 0.2s;
-        }
-        
-        .sidebar-nav a:hover, .sidebar-nav a.active {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .sidebar-nav a i {
-            margin-right: 12px;
-            font-size: 1.25rem;
-            width: 20px;
-            text-align: center;
-        }
-        
-        .main-content {
-            flex-grow: 1;
-            margin-left: 240px;
-            padding: 30px;
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .dashboard-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0;
-        }
-        
-        .form-section {
-            background-color: var(--light-bg);
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #4b5563;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            transition: border-color 0.2s;
-        }
-        
-        .form-control:focus {
-            border-color: #3b82f6;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
-        }
-        
-        textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
-        }
-        
-        .btn-primary {
-            background-color: #3b82f6;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2563eb;
-            color: white;
-        }
-        
-        .btn-secondary {
-            background-color: #f3f4f6;
-            color: #4b5563;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #e5e7eb;
-            color: #1f2937;
-        }
-        
-        .btn i {
-            margin-right: 6px;
-        }
-        
-        .actions-container {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-        
-        .form-section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #1f2937;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .image-preview {
-            width: 100%;
-            height: 200px;
-            border: 2px dashed #d1d5db;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
-            background-color: #f9fafb;
-            color: #6b7280;
-        }
-        
-        .image-preview i {
-            font-size: 2.5rem;
-        }
-    </style>
-{% endblock %}
+	<style>:root
+	{
+		--dark-bg: #1a2332;
+		--light-bg: #ffffff;
+		--card-bg: #f8f9fa;
+		--text-light: #ffffff;
+		--text-dark: #000000;
+		--completed: #e6f7ee;
+		--completed-text: #10b981;
+	}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const imageUrlInput = document.querySelector('input[name="book[Image_url]"]');
-            const imagePreview = document.getElementById('image-preview');
-            const previewIcon = document.getElementById('preview-icon');
-            const previewImage = document.getElementById('preview-image');
-            
-            if (imageUrlInput && imagePreview) {
-                imageUrlInput.addEventListener('input', function() {
-                    const url = this.value.trim();
-                    if (url) {
-                        previewIcon.style.display = 'none';
-                        previewImage.src = url;
-                        previewImage.style.display = 'block';
-                        previewImage.onerror = function() {
-                            previewIcon.style.display = 'block';
-                            previewImage.style.display = 'none';
-                        };
-                    } else {
-                        previewIcon.style.display = 'block';
-                        previewImage.style.display = 'none';
-                    }
-                });
-            }
-        });
-    </script>
-{% endblock %}
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: 'Inter', sans-serif;
+		display: flex;
+		min-height: 100vh;
+	}
 
-{% block body %}
+	.sidebar {
+		width: 240px;
+		background-color: var(--dark-bg);
+		color: var(--text-light);
+		padding: 20px 0;
+		flex-shrink: 0;
+		height: 100vh;
+		position: fixed;
+		z-index: 100;
+	}
+
+	.sidebar-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		padding: 0 20px 20px;
+		margin: 0;
+	}
+
+	.sidebar-nav {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.sidebar-nav li {
+		margin-bottom: 5px;
+	}
+
+	.sidebar-nav a {
+		display: flex;
+		align-items: center;
+		padding: 12px 20px;
+		color: var(--text-light);
+		text-decoration: none;
+		transition: background-color 0.2s;
+	}
+
+	.sidebar-nav a:hover,
+	.sidebar-nav a.active {
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.sidebar-nav a i {
+		margin-right: 12px;
+		font-size: 1.25rem;
+		width: 20px;
+		text-align: center;
+	}
+
+	.main-content {
+		flex-grow: 1;
+		margin-left: 240px;
+		padding: 30px;
+	}
+
+	.header-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 30px;
+	}
+
+	.dashboard-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin-bottom: 0;
+	}
+
+	.form-section {
+		background-color: var(--light-bg);
+		border-radius: 8px;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		padding: 24px;
+		margin-bottom: 20px;
+	}
+
+	.form-group {
+		margin-bottom: 20px;
+	}
+
+	.form-label {
+		display: block;
+		margin-bottom: 8px;
+		font-weight: 500;
+		color: #4b5563;
+	}
+
+	.form-control {
+		width: 100%;
+		padding: 10px 12px;
+		border: 1px solid #d1d5db;
+		border-radius: 6px;
+		font-size: 0.95rem;
+		transition: border-color 0.2s;
+	}
+
+	.form-control:focus {
+		border-color: #3b82f6;
+		outline: none;
+		box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+	}
+
+	textarea.form-control {
+		min-height: 120px;
+		resize: vertical;
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		padding: 8px 16px;
+		border-radius: 6px;
+		font-weight: 500;
+		text-decoration: none;
+		transition: all 0.2s;
+		cursor: pointer;
+		border: none;
+	}
+
+	.btn-primary {
+		background-color: #3b82f6;
+		color: white;
+	}
+
+	.btn-primary:hover {
+		background-color: #2563eb;
+		color: white;
+	}
+
+	.btn-secondary {
+		background-color: #f3f4f6;
+		color: #4b5563;
+	}
+
+	.btn-secondary:hover {
+		background-color: #e5e7eb;
+		color: #1f2937;
+	}
+
+	.btn i {
+		margin-right: 6px;
+	}
+
+	.actions-container {
+		display: flex;
+		gap: 12px;
+		margin-top: 24px;
+	}
+
+	.form-section-title {
+		font-size: 1.1rem;
+		font-weight: 600;
+		margin-bottom: 20px;
+		color: #1f2937;
+		padding-bottom: 12px;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.image-preview {
+		width: 100%;
+		height: 200px;
+		border: 2px dashed #d1d5db;
+		border-radius: 6px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 10px;
+		background-color: #f9fafb;
+		color: #6b7280;
+	}
+
+	.image-preview i {
+		font-size: 2.5rem;
+	}
+</style>{% endblock %}{% block javascripts %}
+{{ parent() }}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+const imageUrlInput = document.querySelector('input[name="book[Image_url]"]');
+const imagePreview = document.getElementById('image-preview');
+const previewIcon = document.getElementById('preview-icon');
+const previewImage = document.getElementById('preview-image');
+
+if (imageUrlInput && imagePreview) {
+imageUrlInput.addEventListener('input', function () {
+const url = this.value.trim();
+if (url) {
+previewIcon.style.display = 'none';
+previewImage.src = url;
+previewImage.style.display = 'block';
+previewImage.onerror = function () {
+previewIcon.style.display = 'block';
+previewImage.style.display = 'none';
+};
+} else {
+previewIcon.style.display = 'block';
+previewImage.style.display = 'none';
+}
+});
+}
+});
+</script>{% endblock %}{% block body %}
 <div class="sidebar">
-    <h1 class="sidebar-title">Admin Panel</h1>
-    <ul class="sidebar-nav">
-        <li>
-            <a href="{{ path('app_dashboard') }}">
-                <i class="bi bi-grid-1x2"></i>
-                Dashboard
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_book_index') }}" class="active">
-                <i class="bi bi-book"></i>
-                Books
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="bi bi-cart"></i>
-                Orders
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="bi bi-people"></i>
-                Customers
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="bi bi-gear"></i>
-                Settings
-            </a>
-        </li>
-    </ul>
+	<h1 class="sidebar-title">Admin Panel</h1>
+	<ul class="sidebar-nav">
+		<li>
+			<a href="{{ path('app_dashboard') }}">
+				<i class="bi bi-grid-1x2"></i>
+				Dashboard
+			</a>
+		</li>
+		<li>
+			<a href="{{ path('app_book_index') }}" class="active">
+				<i class="bi bi-book"></i>
+				Books
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bi bi-cart"></i>
+				Orders
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bi bi-people"></i>
+				Customers
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bi bi-gear"></i>
+				Settings
+			</a>
+		</li>
+	</ul>
 </div>
 
 <div class="main-content">
-    <div class="header-container">
-        <h1 class="dashboard-title">Add New Book</h1>
-        <a href="{{ path('app_book_index') }}" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i>
-            Back to List
-        </a>
-    </div>
+	<div class="header-container">
+		<h1 class="dashboard-title">Add New Book</h1>
+		<a href="{{ path('app_book_index') }}" class="btn btn-secondary">
+			<i class="bi bi-arrow-left"></i>
+			Back to List
+		</a>
+	</div>
 
-    <div class="form-section">
-        <h2 class="form-section-title">Book Information</h2>
-        
-        {{ form_start(form, {'attr': {'class': 'book-form'}}) }}
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        {{ form_label(form.title, 'Title', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Enter book title'}}) }}
-                        {{ form_errors(form.title) }}
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        {{ form_label(form.author, 'Author', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.author, {'attr': {'class': 'form-control', 'placeholder': 'Enter author name'}}) }}
-                        {{ form_errors(form.author) }}
-                    </div>
-                </div>
-            </div>
+	<div class="form-section">
+		<h2 class="form-section-title">Book Information</h2>
 
-            <div class="form-group">
-                {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Enter book description', 'rows': 5}}) }}
-                {{ form_errors(form.description) }}
-            </div>
+		{{ form_start(form, {'attr': {'class': 'book-form'}}) }}
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.title, 'Title', {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Enter book title'}}) }}
+					{{ form_errors(form.title) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.author, 'Author', {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.author, {'attr': {'class': 'form-control', 'placeholder': 'Enter author name'}}) }}
+					{{ form_errors(form.author) }}
+				</div>
+			</div>
+		</div>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        {{ form_label(form.price, 'Price ($)', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.price, {'attr': {'class': 'form-control', 'placeholder': '0.00'}}) }}
-                        {{ form_errors(form.price) }}
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        {{ form_label(form.stock, 'Stock', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.stock, {'attr': {'class': 'form-control', 'placeholder': '0'}}) }}
-                        {{ form_errors(form.stock) }}
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        {{ form_label(form.foundation, 'Foundation Date', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.foundation, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.foundation) }}
-                    </div>
-                </div>
-            </div>
+		<div class="form-group">
+			{{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+			{{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Enter book description', 'rows': 5}}) }}
+			{{ form_errors(form.description) }}
+		</div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        {{ form_label(form.category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.category) }}
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        {{ form_label(form.Image_url, 'Image URL', {'label_attr': {'class': 'form-label'}}) }}
-                        <div class="image-preview" id="image-preview">
-                            <i class="bi bi-image" id="preview-icon"></i>
-                            <img id="preview-image" style="max-width: 100%; max-height: 100%; display: none;" />
-                        </div>
-                        {{ form_widget(form.Image_url, {'attr': {'class': 'form-control', 'placeholder': 'Enter image URL'}}) }}
-                        {{ form_errors(form.Image_url) }}
-                    </div>
-                </div>
-            </div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					{{ form_label(form.price, 'Price ($)', {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.price, {'attr': {'class': 'form-control', 'placeholder': '0.00'}}) }}
+					{{ form_errors(form.price) }}
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					{{ form_label(form.stock, 'Stock', {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.stock, {'attr': {'class': 'form-control', 'placeholder': '0'}}) }}
+					{{ form_errors(form.stock) }}
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					{{ form_label(form.foundation, 'Foundation Date', {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.foundation, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.foundation) }}
+				</div>
+			</div>
+		</div>
 
-            <div class="actions-container">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-plus-lg"></i>
-                    Create Book
-                </button>
-                <a href="{{ path('app_book_index') }}" class="btn btn-secondary">
-                    <i class="bi bi-x-lg"></i>
-                    Cancel
-                </a>
-            </div>
-        {{ form_end(form) }}
-    </div>
-</div>
-{% endblock %}
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.category) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.imageUrl, 'Image URL', {'label_attr': {'class': 'form-label'}}) }}
+					<div class="image-preview" id="image-preview">
+						<i class="bi bi-image" id="preview-icon"></i>
+						<img id="preview-image" style="max-width: 100%; max-height: 100%; display: none;"/>
+					</div>
+					{{ form_widget(form.imageUrl, {'attr': {'class': 'form-control', 'placeholder': 'Enter image URL'}}) }}
+					{{ form_errors(form.imageUrl) }}
+				</div>
+			</div>
+		</div>
+
+		<div class="actions-container">
+			<button type="submit" class="btn btn-primary">
+				<i class="bi bi-plus-lg"></i>
+				Create Book
+			</button>
+			<a href="{{ path('app_book_index') }}" class="btn btn-secondary">
+				<i class="bi bi-x-lg"></i>
+				Cancel
+			</a>
+		</div>
+		{{ form_end(form) }}
+	</div>
+</div>{% endblock %}

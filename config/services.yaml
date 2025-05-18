@@ -6,6 +6,8 @@
 parameters:
     locale: 'en'
     app.host: '%env(APP_URL)%'
+    app.stripe.success_url: 'http://localhost:8000/order/success'
+    app.stripe.cancel_url: 'http://localhost:8000/order/cancel'
 
 framework:
     router:
@@ -24,6 +26,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\Service\StripePayment:
+        arguments:
+            $stripeSecretKey: '%env(STRIPE_SECRET_KEY)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

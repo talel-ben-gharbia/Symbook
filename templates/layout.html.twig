@@ -811,18 +811,37 @@ card.style.display = 'none';
 
 <!-- Cart Modal -->
 <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="cartModalLabel">Your Cart</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	<div class="modal-dialog modal-xl modal-dialog-scrollable">
+		<div class="modal-content border-0 shadow">
+			<div class="modal-header bg-primary text-white border-0">
+				<h5 class="modal-title" id="cartModalLabel">
+					<i class="bi bi-cart3 me-2"></i>Your Shopping Cart
+				</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
-				{{ render(controller('App\\Controller\\CartController::cartPartial')) }}
+			<div class="modal-body p-0">
+				<div class="p-3">
+					{{ render(controller('App\\Controller\\CartController::cartPartial')) }}
+				</div>
 			</div>
-			<div class="modal-footer">
-				<a href="{{ path('app_cart') }}" class="btn btn-primary">Go to Cart</a>
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			<div class="modal-footer border-0 bg-light">
+				<div class="container-fluid px-0">
+					<div class="row align-items-center">
+						<div class="col-md-6 mb-3 mb-md-0">
+							<button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">
+								<i class="bi bi-x-lg me-2"></i>Close
+							</button>
+							<a href="{{ path('app_book_public_index') }}" class="btn btn-outline-primary rounded-pill ms-2">
+								<i class="bi bi-book me-2"></i>Continue Shopping
+							</a>
+						</div>
+						<div class="col-md-6 text-md-end">
+							<a href="{{ path('app_cart') }}" class="btn btn-primary rounded-pill px-4">
+								<i class="bi bi-cart-check me-2"></i>Go to Cart
+							</a>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

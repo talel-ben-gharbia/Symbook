@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Payment Cancelled{% endblock %}
+
+{% block body %}
+<div class="alert alert-warning text-center my-5">
+    <h2>⚠️ Payment Cancelled</h2>
+    <p>You cancelled the payment. No order was placed.</p>
+    <a href="{{ path('app_cart') }}" class="btn btn-outline-primary mt-3">Return to Cart</a>
+</div>
+{% endblock %}

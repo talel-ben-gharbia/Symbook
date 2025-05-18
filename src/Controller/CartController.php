@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\BookRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,49 +44,51 @@ class CartController extends AbstractController
     }
 
     #[Route('/cart/partial', name: 'cart_partial')]
-public function cartPartial(BookRepository $bookRepository): Response
-{
-    $session = $this->requestStack->getSession();
-    $cart = $session->get('cart', []);
-    $cartItems = [];
-    $total = 0;
+    public function cartPartial(BookRepository $bookRepository): Response
+    {
+        $session = $this->requestStack->getSession();
+        $cart = $session->get('cart', []);
+        $cartItems = [];
+        $total = 0;
 
-    foreach ($cart as $id => $quantity) {
-        $book = $bookRepository->find($id);
-        if ($book) {
-            $cartItems[] = [
-                'book' => $book,
-                'quantity' => $quantity,
-            ];
-            $total += $book->getPrice() * $quantity;
+        foreach ($cart as $id => $quantity) {
+            $book = $bookRepository->find($id);
+            if ($book) {
+                $cartItems[] = [
+                    'book' => $book,
+                    'quantity' => $quantity,
+                ];
+                $total += $book->getPrice() * $quantity;
+            }
         }
+
+        return $this->render('cart/cart_content.html.twig', [
+            'items' => $cartItems,
+            'total' => $total,
+        ]);
     }
 
-    return $this->render('cart/cart_content.html.twig', [
-        'items' => $cartItems,
-        'total' => $total,
-    ]);
-}
-
     #[Route('/cart/add/{id}', name: 'cart_add')]
-    public function add(int $id, BookRepository $bookRepository): Response
+    public function add(int $id, BookRepository $bookRepository, Request $request): Response
     {
         $session = $this->requestStack->getSession();
         $book = $bookRepository->find($id);
 
         if (!$book) {
             $this->addFlash('error', 'Book not found.');
-            return $this->redirectToRoute('app_book_public_index'); // Adjust this route as needed
+            return $this->redirectToRoute('app_book_public_index');
         }
 
         $cart = $session->get('cart', []);
-        $cart[$id] = ($cart[$id] ?? 0) + 1; // Increment quantity for this book ID
+        $cart[$id] = ($cart[$id] ?? 0) + 1;
         $session->set('cart', $cart);
 
-        // Temporary debug output (comment out or remove in production)
-        // dump($session->get('cart'));
-        return $this->redirectToRoute('app_cart');
+        $this->addFlash('success', 'Book added to cart.');
+
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer ?: $this->generateUrl('app_book_public_index'));
     }
+
 
     #[Route('/cart/decrement/{id}', name: 'cart_decrement')]
     public function decrement(int $id): Response
@@ -124,13 +127,5 @@ public function cartPartial(BookRepository $bookRepository): Response
         $session = $this->requestStack->getSession();
         $session->remove('cart');
         return $this->redirectToRoute('app_cart');
-    }
-
-    #[Route('/test-session', name: 'test_session')]
-    public function testSession(): Response
-    {
-        $session = $this->requestStack->getSession();
-        $session->set('test', 'Session Works!');
-        return new Response('Session test: ' . $session->get('test'));
     }
 }
