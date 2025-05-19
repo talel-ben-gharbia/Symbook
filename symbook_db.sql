@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 12 mai 2025 à 16:15
+-- Généré le : lun. 19 mai 2025 à 19:32
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -53,7 +53,8 @@ INSERT INTO `book` (`id`, `title`, `author`, `description`, `price`, `image_url`
 (7, 'Dune', 'Frank Herbert', 'A science fiction novel set in the distant future amidst a feudal interstellar society, following the story of young Paul Atreides as he navigates political intrigue and ecological challenges on the desert planet Arrakis.', 45.00, 'https://m.media-amazon.com/images/I/41JVFor1FpL._SY445_SX342_.jpg', 50, '1965-08-01', 4),
 (8, 'The Notebook', 'Nicholas Sparks', 'A romantic novel that tells the story of Noah Calhoun and Allie Nelson, two lovers from different social backgrounds whose love is tested by time and circumstance.', 35.00, 'https://m.media-amazon.com/images/I/71uPRalnJnL._AC_SY445_.jpg', 75, '1996-10-01', 5),
 (9, 'Sapiens: A Brief History of Humankind', 'Yuval Noah Harari', 'A non-fiction book that explores the history of humanity from the Stone Age to the present, examining how biology and history have defined us and enhanced our understanding of what it means to be human.', 48.00, 'https://m.media-amazon.com/images/I/51Pe5D36rML._SY445_SX342_.jpg', 60, '2011-01-01', 6),
-(10, 'The Great Gatsby', 'F. Scott Fitzgerald', 'Set in the summer of 1922, the novel follows the life of a young and mysterious millionaire, his extravagant lifestyle in Long Island, and his obsessive love for a beautiful former debutante. As the story unfolds, the millionaire\'s dark secrets and the corrupt reality of the American dream during the Jazz Age are revealed. The narrative is a critique of the hedonistic excess and moral decay of the era, ultimately leading to tragic consequences.', 30.00, 'https://assets.lulu.com/cover_thumbs/8/d/8dzdnj-front-shortedge-384.jpg', 10, '1925-05-06', 2);
+(10, 'The Great Gatsby', 'F. Scott Fitzgerald', 'Set in the summer of 1922, the novel follows the life of a young and mysterious millionaire, his extravagant lifestyle in Long Island, and his obsessive love for a beautiful former debutante. As the story unfolds, the millionaire\'s dark secrets and the corrupt reality of the American dream during the Jazz Age are revealed. The narrative is a critique of the hedonistic excess and moral decay of the era, ultimately leading to tragic consequences.', 30.00, 'https://assets.lulu.com/cover_thumbs/8/d/8dzdnj-front-shortedge-384.jpg', 10, '1925-05-06', 2),
+(11, 'abcd', 'jane', 'ksjdlkjlkhjsklhjv', 12.00, 'https://picsum.photos/200/300', 23, '2025-02-05', 4);
 
 -- --------------------------------------------------------
 
@@ -149,8 +150,16 @@ CREATE TABLE `order` (
 INSERT INTO `order` (`id`, `customer_id`, `order_date`, `order_items`, `total`, `status`) VALUES
 (1, 17, '2025-05-10', '[{\"book_id\":2,\"title\":\"The Hobbit\",\"author\":\"J.R.R. Tolkien\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/712cDO7d73L._SY466_.jpg\",\"price\":\"30.00\",\"quantity\":1,\"subtotal\":30.0}]', 30, 'pending'),
 (2, 17, '2025-05-10', '[{\"book_id\":3,\"title\":\"The Adventures of Sherlock Holmes\",\"author\":\"Arthur Conan Doyle\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61W8vD3LBRL._SY425_.jpg\",\"price\":\"30.00\",\"quantity\":1,\"subtotal\":30.0},{\"book_id\":4,\"title\":\"To Kill a Mockingbird\",\"author\":\"Harper Lee\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71FxgtFKcQL.jpg\",\"price\":\"60.00\",\"quantity\":1,\"subtotal\":60.0}]', 90, 'pending'),
-(3, 16, '2025-05-12', '[{\"book_id\":2,\"title\":\"The Hobbit\",\"author\":\"J.R.R. Tolkien\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/712cDO7d73L._SY466_.jpg\",\"price\":\"30.00\",\"quantity\":2,\"subtotal\":60.0},{\"book_id\":7,\"title\":\"Dune\",\"author\":\"Frank Herbert\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/41JVFor1FpL._SY445_SX342_.jpg\",\"price\":\"45.00\",\"quantity\":3,\"subtotal\":135.0}]', 195, 'pending'),
-(4, 16, '2025-05-12', '[{\"book_id\":5,\"title\":\"Harry Potter and the Sorcerer\'s Stone\",\"author\":\"J.K. Rowling\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71-++hbbERL.jpg\",\"price\":\"45.00\",\"quantity\":1,\"subtotal\":45.0}]', 45, 'pending');
+(6, 18, '2025-05-13', '[{\"book_id\":2,\"title\":\"The Hobbit\",\"author\":\"J.R.R. Tolkien\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/712cDO7d73L._SY466_.jpg\",\"price\":\"30.00\",\"quantity\":2,\"subtotal\":60.0}]', 60, 'pending'),
+(18, 16, '2025-05-18', '{\"items\":[{\"book_id\":2,\"title\":\"The Hobbit\",\"author\":\"J.R.R. Tolkien\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/712cDO7d73L._SY466_.jpg\",\"price\":\"30.00\",\"quantity\":1,\"subtotal\":30.0}],\"payment_method\":\"online\"}', 37, 'processing'),
+(21, 16, '2025-05-18', '{\"items\":[{\"book_id\":4,\"title\":\"To Kill a Mockingbird\",\"author\":\"Harper Lee\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71FxgtFKcQL.jpg\",\"price\":\"60.00\",\"quantity\":1,\"subtotal\":60.0}],\"payment_method\":\"online\"}', 67, 'processing'),
+(22, 16, '2025-05-18', '{\"items\":[{\"book_id\":2,\"title\":\"The Hobbit\",\"author\":\"J.R.R. Tolkien\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/712cDO7d73L._SY466_.jpg\",\"price\":\"30.00\",\"quantity\":2,\"subtotal\":60.0}],\"payment_method\":\"online\"}', 67, 'processing'),
+(23, 16, '2025-05-18', '{\"items\":[{\"book_id\":1,\"title\":\"Pride and Prejudice\",\"author\":\"Jane Austen\",\"imageUrl\":\"https:\\/\\/books.google.tn\\/books\\/content?id=s1gVAAAAYAAJ&pg=PP1&img=1&zoom=3&hl=en&sig=ACfU3U3_OhpyWi8T7D1caoRH-59Tvgn1jw&w=1280\",\"price\":\"30.00\",\"quantity\":3,\"subtotal\":90.0}],\"payment_method\":\"online\"}', 97, 'processing'),
+(24, 16, '2025-05-18', '{\"items\":[{\"book_id\":2,\"title\":\"The Hobbit\",\"author\":\"J.R.R. Tolkien\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/712cDO7d73L._SY466_.jpg\",\"price\":\"30.00\",\"quantity\":1,\"subtotal\":30.0}],\"payment_method\":\"online\"}', 37, 'processing'),
+(25, 16, '2025-05-18', '{\"items\":[{\"book_id\":2,\"title\":\"The Hobbit\",\"author\":\"J.R.R. Tolkien\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/712cDO7d73L._SY466_.jpg\",\"price\":\"30.00\",\"quantity\":4,\"subtotal\":120.0}],\"payment_method\":\"online\"}', 127, 'processing'),
+(26, 16, '2025-05-18', '{\"items\":[{\"book_id\":4,\"title\":\"To Kill a Mockingbird\",\"author\":\"Harper Lee\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71FxgtFKcQL.jpg\",\"price\":\"60.00\",\"quantity\":1,\"subtotal\":60.0}],\"delivery_info\":{\"address\":\"aefzefezfrf\",\"phone\":\"55528602\"},\"payment_method\":\"cash\"}', 67, 'pending'),
+(27, 16, '2025-05-18', '{\"items\":[{\"book_id\":3,\"title\":\"The Adventures of Sherlock Holmes\",\"author\":\"Arthur Conan Doyle\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61W8vD3LBRL._SY425_.jpg\",\"price\":\"30.00\",\"quantity\":1,\"subtotal\":30.0}],\"delivery_info\":{\"address\":\"fefzrfzeef\",\"phone\":\"21100571\"},\"payment_method\":\"cash\"}', 37, 'pending'),
+(28, 16, '2025-05-19', '{\"items\":[{\"book_id\":3,\"title\":\"The Adventures of Sherlock Holmes\",\"author\":\"Arthur Conan Doyle\",\"imageUrl\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61W8vD3LBRL._SY425_.jpg\",\"price\":\"30.00\",\"quantity\":1,\"subtotal\":30.0}],\"payment_method\":\"online\"}', 37, 'processing');
 
 -- --------------------------------------------------------
 
@@ -201,7 +210,8 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `is_verified`, `username
 (14, 'exemple6@gmail.com', '[\"ROLE_USER\"]', '$2y$13$dhmXPPFDQTG4fXwuSQ/aTOAqoOZPh5XcX9JBnQ9YoFFJHzx6DFiQ6', 1, 'exemple6', '2025-05-12'),
 (15, 'exemple4@gmail.com', '[\"ROLE_USER\"]', '$2y$13$5rGNsT1m/svz/BFjgmWp7eXUrQW7MOpeNiPfniFz7nqlghsX/Nh7m', 1, 'exemple4', '2025-05-12'),
 (16, 'exemple2@gmail.com', '[\"ROLE_USER\"]', '$2y$13$l4RTaiOm5du53HXcxdm7Cu3O/A6TafbGo42Wih90pOUU/3fis.Jvq', 1, 'exemple2', '2025-05-12'),
-(17, 'dhibyoussef@gmail.com', '[\"ROLE_USER\"]', '$2y$13$IRDbG4ykhtofBbRp.xvcE.2xQYCNbHX8BWZYknCfYi6YTBssaO9cK', 1, 'dhib', '2025-05-12');
+(17, 'dhibyoussef@gmail.com', '[\"ROLE_USER\"]', '$2y$13$IRDbG4ykhtofBbRp.xvcE.2xQYCNbHX8BWZYknCfYi6YTBssaO9cK', 1, 'dhib', '2025-05-12'),
+(18, 'exemple8@gmail.com', '[\"ROLE_USER\"]', '$2y$13$.DwI7E.wfsJskQ9ch0oYReTFvjVjQCeLaYUfH8Tcl5ge3ozxlM0rC', 1, 'exemple8', NULL);
 
 --
 -- Index pour les tables déchargées
@@ -264,7 +274,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `book`
 --
 ALTER TABLE `book`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `category`
@@ -282,19 +292,19 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT pour la table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT pour la table `reset_password_request`
 --
 ALTER TABLE `reset_password_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Contraintes pour les tables déchargées
